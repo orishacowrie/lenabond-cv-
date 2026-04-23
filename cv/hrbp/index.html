@@ -41,6 +41,17 @@
 
   .job { margin-bottom: 36px; }
   .job:last-child { margin-bottom: 0; }
+
+  /* ANIMATION */
+  .job-title, .job-company {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .job-company { transition-delay: 0.12s; }
+  .job.visible .job-title,
+  .job.visible .job-company { opacity: 1; transform: translateX(0); }
+
   .job-title { font-family: 'Geologica', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 2px; }
   .job-company { font-size: 0.88rem; color: var(--accent); font-weight: 500; margin-bottom: 2px; }
   .job-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
@@ -100,11 +111,9 @@
 
 <div class="main">
   <div class="content">
-
     <div class="section">
       <div class="section-label">Experience</div>
 
-      <!-- Inktech -->
       <div class="job">
         <div class="job-title">Senior People Partner</div>
         <div class="job-company">IT holding: AI products, fintech, entertainment-tech</div>
@@ -124,7 +133,6 @@
 
       <div class="job-divider"></div>
 
-      <!-- Dyninno -->
       <div class="job">
         <div class="job-title">Global Talent Acquisition Head</div>
         <div class="job-company">Dyninno Group — travel, finance, entertainment, technology</div>
@@ -134,7 +142,6 @@
 
       <div class="job-divider"></div>
 
-      <!-- Beeline -->
       <div class="job">
         <div class="job-title">Head of Talent Acquisition & Employer Brand</div>
         <div class="job-company">Beeline — telecom, 44M+ clients</div>
@@ -145,7 +152,6 @@
 
       <div class="job-divider"></div>
 
-      <!-- Open Group -->
       <div class="job">
         <div class="job-title">HR Head</div>
         <div class="job-company">OPEN Group — market leader in trade marketing and staff outsourcing in Russia, 15,000+ employees</div>
@@ -172,19 +178,16 @@
 
       <div class="job-divider"></div>
 
-      <!-- Adecco -->
       <div class="job">
         <div class="job-title">Operations Manager</div>
         <div class="job-company">Adecco Group Russia</div>
         <div class="job-meta">2011 — 2014</div>
-        <p class="job-desc">Regional Operations Manager promoted to Operations Director. Responsible for country P&L. Staffed 5,000 people for Sochi 2014 Olympics in 3 months. Grew recruitment line sales by 37%.</p>
+        <p class="job-desc">Started as Regional Operations Manager and grew within the company. Responsible for P&L across service lines. Key project: crisis staffing management for Sochi 2014 Olympics — 5,000 temporary employees hired and deployed across Russia in 3 months.</p>
       </div>
-
     </div>
   </div>
 
   <aside class="sidebar">
-
     <div class="section">
       <div class="section-label">Skills</div>
       <div class="skills-list">
@@ -236,9 +239,21 @@
         <div class="skill-tag">German — A2</div>
       </div>
     </div>
-
   </aside>
 </div>
+
+<script>
+const jobs = document.querySelectorAll('.job');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+jobs.forEach(job => observer.observe(job));
+</script>
 
 </body>
 </html>
