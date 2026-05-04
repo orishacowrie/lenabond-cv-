@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The End — Thank You</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f7f5;
+    --ink: #1a1916;
+    --ink-muted: #6b6860;
+    --accent: #1a3d35;
+    --accent-light: #e4eeeb;
+    --accent-mid: #2d6b5a;
+    --border: #d6e2dc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+  }
+
+  .page {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent-mid);
+  }
+
+  p {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 1.8;
+    max-width: 420px;
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-top: 16px;
+  }
+  .back:hover { background: #ccddd7; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="tag">The End</div>
+  <h1>Thank You</h1>
+  <div class="divider"></div>
+  <p>Happy to answer any questions at our next meeting.</p>
+  <a href="/task" class="back">← Back to Navigation</a>
+</div>
+</body>
+</html>

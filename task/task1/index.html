@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task 1 — Performance Review Rollout</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f7f5;
+    --surface: #ffffff;
+    --ink: #1a1916;
+    --ink-muted: #6b6860;
+    --accent: #1a3d35;
+    --accent-light: #e4eeeb;
+    --accent-mid: #2d6b5a;
+    --green: #3db87a;
+    --green-light: #eaf7f1;
+    --coral: #c85a3a;
+    --coral-light: #f9ede9;
+    --purple: #4a3f7a;
+    --purple-light: #eeecf6;
+    --amber: #b06820;
+    --amber-light: #faf0e4;
+    --teal: #1e6b6b;
+    --teal-light: #e4f2f2;
+    --border: #d6e2dc;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 48px 24px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .back:hover { background: #ccddd7; }
+
+  .top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 32px;
+  }
+
+  .bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .btn-next {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--surface);
+    background: var(--accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-next:hover { background: var(--accent-mid); }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    line-height: 1.2;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--ink-muted);
+    margin-bottom: 48px;
+    max-width: 580px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    margin-top: 28px;
+  }
+
+  p { margin-bottom: 14px; color: var(--ink); }
+
+  ul {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 14px;
+  }
+
+  ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    color: var(--ink);
+  }
+
+  ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ink-muted);
+  }
+
+  /* Assumptions grid */
+  .assumptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .assumption-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+
+  .assumption-num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .assumption-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* Section card */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+
+  .section-card h3 { margin-top: 0; }
+
+  /* Intro block */
+  .intro-block {
+    background: var(--green-light);
+    border: 1px solid #a8dfc4;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+
+  .intro-block p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--accent);
+    line-height: 1.7;
+  }
+
+  /* Form visualization */
+  .form-visual {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 14px;
+  }
+
+  .form-blocks {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .form-block {
+    background: var(--purple-light);
+    border: 1px solid #ccc8e8;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .form-block-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+
+  .form-block-sub {
+    font-size: 11px;
+    color: #6b6490;
+  }
+
+  .form-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .form-col {
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+
+  /* Architecture diagram */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+
+  /* Scale bands */
+  .scale-band {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    align-items: stretch;
+  }
+
+  .scale-item {
+    flex: 1;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+  }
+
+  .scale-item .num {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .scale-item .label {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  /* Roadmap table */
+  .roadmap-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .roadmap-table th {
+    background: var(--accent);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .roadmap-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .roadmap-table tr:last-child td { border-bottom: none; }
+  .roadmap-table tr:nth-child(even) td { background: #f8faf9; }
+
+  .roadmap-table td:first-child {
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  .roadmap-table td.empty {
+    color: var(--ink-muted);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* Metrics table */
+  .metrics-section { margin-bottom: 28px; }
+
+  .metrics-group-title {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .metrics-header {
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 10px 14px;
+  }
+
+  .metrics-cell {
+    background: var(--surface);
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .metrics-cell.name {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .metrics-cell.desc { color: var(--ink-muted); }
+  .metrics-cell.goal { color: var(--accent-mid); font-weight: 500; }
+
+  /* Risk table */
+  .risk-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .risk-table th {
+    background: var(--ink);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .risk-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .risk-table tr:last-child td { border-bottom: none; }
+  .risk-table tr:nth-child(even) td { background: #f8faf9; }
+
+  .risk-category {
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .risk-desc { color: var(--ink-muted); }
+  .risk-mit { color: var(--ink); }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--accent-light);
+    border: 1px solid #a8c8bc;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    text-align: center;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Scalable badge */
+  .scalable-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-light);
+    border: 1px solid #a8dfc4;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent-mid);
+    margin: 16px 0;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 32px 16px; }
+    h1 { font-size: 28px; }
+
+    /* Cards 01-06: single column */
+    .assumptions { grid-template-columns: 1fr !important; }
+
+    /* Form blocks: 2 equal columns */
+    .form-blocks { grid-template-columns: repeat(2, 1fr); }
+    .form-cols { grid-template-columns: 1fr; }
+
+    /* Rating scale: 2 rows of 3, all equal */
+    .scale-band { flex-wrap: wrap; }
+    .scale-item { flex: 0 0 calc(33.333% - 5px); min-height: 80px; }
+
+    /* Roadmap table: each row becomes a card */
+    .roadmap-table, .roadmap-table tbody, .roadmap-table tr, .roadmap-table td { display: block; width: 100%; }
+    .roadmap-table thead { display: none; }
+    .roadmap-table tr { margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .roadmap-table td { border-bottom: 1px solid var(--border); padding: 10px 14px; box-sizing: border-box; white-space: normal; }
+    .roadmap-table td:first-child { font-weight: 600; background: var(--accent-light); color: var(--accent); width: 100% !important; }
+    .roadmap-table td.empty { display: none; }
+    .roadmap-table tr:last-child td:last-child { border-bottom: none; }
+
+    /* Metrics */
+    .metrics-grid { grid-template-columns: 1fr; }
+
+    /* Bottom buttons */
+    .top-bar, .bottom-bar { flex-direction: column; gap: 12px; align-items: stretch; text-align: center; }
+    .btn-next, .back { text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar">
+    <a href="/task" class="back">← Back to Navigation</a>
+  </div>
+
+  <div class="tag">Task 1</div>
+  <h1>Performance Review<br>Process Rollout</h1>
+  <p class="subtitle">Implementation plan for rolling out a new performance review process in Notion — from design to adoption.</p>
+
+  <hr class="divider">
+
+  <!-- ASSUMPTIONS -->
+  <h2>Assumptions</h2>
+  <p style="color:var(--ink-muted);font-size:14px;margin-bottom:20px;">For the purpose of this task, I am working with the following assumptions:</p>
+
+  <div class="assumptions">
+    <div class="assumption-item">
+      <div class="assumption-num">01</div>
+      <p class="assumption-text">This is a startup — the review process is straightforward and does not include role-specific competencies. The form covers: goals, values, achievements, development areas, next steps, and a final rating.</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">02</div>
+      <p class="assumption-text">The rating directly affects bonus, promotion, and talent pipeline decisions.</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">03</div>
+      <p class="assumption-text">Performance Reviews are conducted quarterly. Each cycle includes both blocks — results and values.</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">04</div>
+      <p class="assumption-text">The company uses a task tracker (Jira/Asana or similar).</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">05</div>
+      <p class="assumption-text">The process flow: goal-setting → self-review → manager review → meeting → calibration → final ratings → decisions.</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">06</div>
+      <p class="assumption-text">Before redesigning the process, feedback was collected from employees and managers. Changes were validated with external specialists where internal expertise was lacking.</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">07</div>
+      <p class="assumption-text">Managers know how to set goals. Each employee's goals reflect department goals, which derive from company goals.</p>
+    </div>
+    <div class="assumption-item">
+      <div class="assumption-num">08</div>
+      <p class="assumption-text">After each cycle, a survey is conducted to collect feedback — results are used to improve the process.</p>
+    </div>
+    <div class="assumption-item" style="grid-column: span 2;">
+      <div class="assumption-num">09</div>
+      <p class="assumption-text">For each value, there are 5 levels of behavioral expression with examples. The comment field is activated only when there is a discrepancy between self-review and manager review.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- VALIDATION -->
+  <h2>Validation</h2>
+
+  <div class="intro-block">
+    <p>Before moving to validation methods, I would start by asking a few foundational questions: what problem are we solving through performance reviews? What problem do the current changes address? Does each change serve our primary goal?</p>
+  </div>
+
+  <div class="section-card">
+    <h3>Before launch</h3>
+    <p>3–4 weeks before the general launch — a pilot with 10–15 people from different teams, roles, and levels. I collect feedback through an anonymous survey and a focus group. I look at specific metrics: time to complete, completeness of responses, quality of self-assessments and manager feedback. Since feedback was already collected before the redesign, the pilot is a final validation check, not starting from scratch.</p>
+  </div>
+
+  <div class="section-card">
+    <h3>After the cycle</h3>
+    <p>The survey is a built-in part of every cycle. I analyze results compared to previous periods: % completed on time, average process NPS, data quality. 1–2 months later I conduct several 1:1s with managers and employees — looking at the impact of reviews on motivation and development.</p>
+  </div>
+
+  <div class="section-card">
+    <h3>Long term (1–2 years)</h3>
+    <p>I track the correlation between performance review analytics trends and business and HR metrics: whether there is a connection with engagement, turnover, and productivity dynamics.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- COMMUNICATION -->
+  <h2>Communication and training</h2>
+
+  <div class="section-card">
+    <p>At least one month before launch is dedicated to communication, training, and team preparation. Timelines and deadlines run as a consistent thread through all activities.</p>
+
+    <table class="roadmap-table">
+      <thead>
+        <tr>
+          <th>Timeline</th>
+          <th>Communication</th>
+          <th>Training</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>T−4 weeks</td>
+          <td>Live online meeting with managers, CEO, and HR Manager. Announcement across all corporate channels (email, Slack). All messages are connected to company values, business results, and personal benefits for each employee — with a specific focus on changes to the form and questions: why they changed and what this brings.</td>
+          <td class="empty">—</td>
+        </tr>
+        <tr>
+          <td>T−2 weeks</td>
+          <td>Meetings of managers and HR Generalist with their teams. Reminders across corporate channels (email, Slack, etc.).</td>
+          <td>Separate live online sessions for managers and employees — different content, different focus. Notion guide + Q&A — a live document, updated as questions come in. Short Loom videos available to everyone — can be revisited at any time. Micro-learning — short tips in regular corporate newsletters throughout the launch period.</td>
+        </tr>
+        <tr>
+          <td>T−1 week</td>
+          <td>Deadline reminders 2–3 times per week.</td>
+          <td>Post-training tests with gamification elements: fast and correct completion earns small rewards, individual or team-based. This serves both as a knowledge check and as additional motivation to complete on time.</td>
+        </tr>
+        <tr>
+          <td>T+0</td>
+          <td>Each person receives a direct link to their form. Automated reminders are active.</td>
+          <td class="empty">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ROLE OF HR MANAGER -->
+  <h2>Role of the HR Manager</h2>
+  <div class="section-card">
+    <p>The HR Manager and CEO sign the main written communications — this signals that the process is important and supported at the leadership level.</p>
+    <p>The HR Manager independently runs the meeting with managers and delivers the final communication on results after the cycle closes.</p>
+    <p>All operational work sits with the HR Generalist. The HR Manager steps in for escalations.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- COMPLETION RATE -->
+  <h2>How to improve completion rate</h2>
+  <div class="section-card">
+    <ul>
+      <li>Completing reviews on time is included in managers' KPIs.</li>
+      <li>All key milestones are added to participants' calendars in advance.</li>
+      <li>Maximum automation of data loading: goals are pulled from the task tracker automatically.</li>
+      <li>A balance between numerical ratings and open-ended questions — the form does not overload.</li>
+      <li>Real-time dashboard — managers can see their team's progress.</li>
+      <li>Automated notifications from Notion triggered by key events.</li>
+      <li>Gamification: Early Birds — team and individual rewards for completing on time.</li>
+      <li>Forms are optimized for mobile.</li>
+      <li>For each value, there are 5 levels of behavioral expression with examples. The comment field is activated only when there is a discrepancy — this saves time on completion.</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- AUTOMATION -->
+  <h2>Automation</h2>
+
+  <div class="section-card">
+    <h3>Review form</h3>
+    <div class="form-visual">
+      <div class="form-label">Database Template — one card = one employee × one cycle</div>
+      <div class="form-blocks">
+        <div class="form-block">
+          <div class="form-block-title">Goals</div>
+          <div class="form-block-sub">1–5, weight 70%</div>
+        </div>
+        <div class="form-block">
+          <div class="form-block-title">Values</div>
+          <div class="form-block-sub">1–5, weight 30%</div>
+        </div>
+        <div class="form-block">
+          <div class="form-block-title">Achievements</div>
+          <div class="form-block-sub">2–3 points</div>
+        </div>
+        <div class="form-block">
+          <div class="form-block-title">Development</div>
+          <div class="form-block-sub">1–2 areas</div>
+        </div>
+        <div class="form-block">
+          <div class="form-block-title">Final score</div>
+          <div class="form-block-sub">Auto-calculated</div>
+        </div>
+      </div>
+      <div class="form-cols">
+        <div class="form-col">Self-review</div>
+        <div class="form-col">Manager review</div>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      Final score = Goals × 0.7 + Values × 0.3
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h3>Rating scale</h3>
+    <div class="scale-band">
+      <div class="scale-item" style="background:#fce8e3;color:#8b2a15;">
+        <div class="num">1</div>
+        <div class="label">Does Not Meet</div>
+      </div>
+      <div class="scale-item" style="background:#fdf2e3;color:#7a4a10;">
+        <div class="num">2</div>
+        <div class="label">Partially Meets</div>
+      </div>
+      <div class="scale-item" style="background:#e4f2eb;color:#1a4d35;">
+        <div class="num">3</div>
+        <div class="label">Meets Expectations</div>
+      </div>
+      <div class="scale-item" style="background:#d4ecdf;color:#1a3d2a;">
+        <div class="num">4</div>
+        <div class="label">Exceeds Expectations</div>
+      </div>
+      <div class="scale-item" style="background:#c6e8d4;color:#0d3020;">
+        <div class="num">5</div>
+        <div class="label">Outstanding</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h3>Notion architecture</h3>
+    <p style="font-size:14px;color:var(--ink-muted);margin-bottom:16px;">Five interconnected databases. Data is pulled automatically via Relation and Rollup.</p>
+
+    <svg width="100%" viewBox="0 0 780 620" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#6b6860" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#b0aba4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- ROW 1: Sources -->
+      <text x="390" y="20" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif" letter-spacing="1" font-weight="500">INPUT DATA</text>
+      <rect x="60" y="30" width="200" height="50" rx="8" fill="#faf0e4" stroke="#d4a870" stroke-width="1"/>
+      <text x="160" y="52" text-anchor="middle" font-size="13" font-weight="500" fill="#7a4a10" font-family="DM Sans, sans-serif">Task tracker</text>
+      <text x="160" y="68" text-anchor="middle" font-size="11" fill="#9a6a30" font-family="DM Sans, sans-serif">Employee goals</text>
+      <rect x="520" y="30" width="200" height="50" rx="8" fill="#faf0e4" stroke="#d4a870" stroke-width="1"/>
+      <text x="620" y="52" text-anchor="middle" font-size="13" font-weight="500" fill="#7a4a10" font-family="DM Sans, sans-serif">HR — reference data</text>
+      <text x="620" y="68" text-anchor="middle" font-size="11" fill="#9a6a30" font-family="DM Sans, sans-serif">Employees · Values · Cycles</text>
+
+      <!-- arrows row1 → form -->
+      <path d="M160 80 Q160 108 230 128" stroke="#6b6860" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+      <path d="M620 80 Q620 108 560 128" stroke="#6b6860" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+      <!-- ROW 2: Form -->
+      <text x="390" y="118" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif" letter-spacing="1" font-weight="500">REVIEW FORM — DATABASE TEMPLATE</text>
+      <rect x="20" y="128" width="740" height="118" rx="10" fill="#e8f4ee" stroke="#3db87a" stroke-width="1"/>
+      <rect x="36" y="142" width="130" height="52" rx="6" fill="#eeecf6" stroke="#b0aad8" stroke-width="1"/>
+      <text x="101" y="162" text-anchor="middle" font-size="12" font-weight="500" fill="#4a3f7a" font-family="DM Sans, sans-serif">Goals</text>
+      <text x="101" y="178" text-anchor="middle" font-size="10" fill="#6b6490" font-family="DM Sans, sans-serif">1–5, weight 70%</text>
+      <rect x="176" y="142" width="130" height="52" rx="6" fill="#eeecf6" stroke="#b0aad8" stroke-width="1"/>
+      <text x="241" y="162" text-anchor="middle" font-size="12" font-weight="500" fill="#4a3f7a" font-family="DM Sans, sans-serif">Values</text>
+      <text x="241" y="178" text-anchor="middle" font-size="10" fill="#6b6490" font-family="DM Sans, sans-serif">1–5, weight 30%</text>
+      <rect x="316" y="142" width="130" height="52" rx="6" fill="#eeecf6" stroke="#b0aad8" stroke-width="1"/>
+      <text x="381" y="162" text-anchor="middle" font-size="12" font-weight="500" fill="#4a3f7a" font-family="DM Sans, sans-serif">Achievements</text>
+      <text x="381" y="178" text-anchor="middle" font-size="10" fill="#6b6490" font-family="DM Sans, sans-serif">2–3 points</text>
+      <rect x="456" y="142" width="130" height="52" rx="6" fill="#eeecf6" stroke="#b0aad8" stroke-width="1"/>
+      <text x="521" y="162" text-anchor="middle" font-size="12" font-weight="500" fill="#4a3f7a" font-family="DM Sans, sans-serif">Development</text>
+      <text x="521" y="178" text-anchor="middle" font-size="10" fill="#6b6490" font-family="DM Sans, sans-serif">1–2 areas</text>
+      <rect x="596" y="142" width="128" height="52" rx="6" fill="#eeecf6" stroke="#b0aad8" stroke-width="1"/>
+      <text x="660" y="162" text-anchor="middle" font-size="12" font-weight="500" fill="#4a3f7a" font-family="DM Sans, sans-serif">Final score</text>
+      <text x="660" y="178" text-anchor="middle" font-size="10" fill="#6b6490" font-family="DM Sans, sans-serif">Auto-calculated</text>
+      <text x="250" y="230" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif">Self-review + Manager review</text>
+      <text x="570" y="230" text-anchor="middle" font-size="11" fill="#1a6040" font-family="DM Sans, sans-serif" font-weight="500">Goals×0.7 + Values×0.3</text>
+
+      <!-- ROW 3: Roles -->
+      <text x="390" y="272" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif" letter-spacing="1" font-weight="500">WHO FILLS IN AND WHO HAS ACCESS</text>
+      <rect x="20" y="282" width="210" height="52" rx="8" fill="#f5f5f3" stroke="#c8c4bc" stroke-width="1"/>
+      <text x="125" y="302" text-anchor="middle" font-size="13" font-weight="500" fill="#1a1916" font-family="DM Sans, sans-serif">Employee</text>
+      <text x="125" y="320" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif">Full access to own form</text>
+      <rect x="285" y="282" width="210" height="52" rx="8" fill="#f5f5f3" stroke="#c8c4bc" stroke-width="1"/>
+      <text x="390" y="302" text-anchor="middle" font-size="13" font-weight="500" fill="#1a1916" font-family="DM Sans, sans-serif">Manager</text>
+      <text x="390" y="320" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif">Team forms + dashboard</text>
+      <rect x="550" y="282" width="210" height="52" rx="8" fill="#e4eeeb" stroke="#1a3d35" stroke-width="1"/>
+      <text x="655" y="302" text-anchor="middle" font-size="13" font-weight="500" fill="#1a3d35" font-family="DM Sans, sans-serif">Admin / HR</text>
+      <text x="655" y="320" text-anchor="middle" font-size="11" fill="#2d6b5a" font-family="DM Sans, sans-serif">All databases + calibration</text>
+
+      <!-- arrows form → roles -->
+      <path d="M125 248 L125 280" stroke="#b0aba4" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr2)" fill="none"/>
+      <path d="M390 248 L390 280" stroke="#b0aba4" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr2)" fill="none"/>
+      <path d="M570 248 Q655 264 655 280" stroke="#6b6860" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+      <!-- ROW 4: Central DB -->
+      <text x="390" y="376" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif" letter-spacing="1" font-weight="500">CENTRAL NOTION DATABASE (HR ONLY)</text>
+      <rect x="160" y="386" width="460" height="52" rx="8" fill="#d4ecdf" stroke="#1a3d35" stroke-width="1.5"/>
+      <text x="390" y="408" text-anchor="middle" font-size="14" font-weight="500" fill="#1a3d35" font-family="DM Sans, sans-serif">Performance Reviews</text>
+      <text x="390" y="426" text-anchor="middle" font-size="11" fill="#2d6b5a" font-family="DM Sans, sans-serif">All cards · formula · statuses</text>
+
+      <!-- arrows roles → base -->
+      <path d="M125 334 Q125 368 220 388" stroke="#b0aba4" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr2)" fill="none"/>
+      <path d="M390 334 L390 384" stroke="#b0aba4" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr2)" fill="none"/>
+      <path d="M655 334 Q655 368 560 388" stroke="#6b6860" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+      <!-- ROW 5: Output -->
+      <text x="390" y="476" text-anchor="middle" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif" letter-spacing="1" font-weight="500">AUTOMATED VIA ZAPIER / MAKE</text>
+      <rect x="60" y="486" width="270" height="52" rx="8" fill="#e6f0f8" stroke="#185fa5" stroke-width="1"/>
+      <text x="195" y="508" text-anchor="middle" font-size="13" font-weight="500" fill="#0c447c" font-family="DM Sans, sans-serif">Notifications</text>
+      <text x="195" y="526" text-anchor="middle" font-size="11" fill="#185fa5" font-family="DM Sans, sans-serif">→ Slack / Email</text>
+      <rect x="450" y="486" width="270" height="52" rx="8" fill="#eaf3de" stroke="#3b6d11" stroke-width="1"/>
+      <text x="585" y="508" text-anchor="middle" font-size="13" font-weight="500" fill="#27500a" font-family="DM Sans, sans-serif">Google Sheets</text>
+      <text x="585" y="526" text-anchor="middle" font-size="11" fill="#3b6d11" font-family="DM Sans, sans-serif">Analytics after cycle close</text>
+
+      <path d="M280 438 Q195 462 195 484" stroke="#6b6860" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+      <path d="M500 438 Q585 462 585 484" stroke="#6b6860" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+      <!-- Scalable -->
+      <rect x="200" y="562" width="380" height="36" rx="18" fill="#d4ecdf" stroke="#1a3d35" stroke-width="1"/>
+      <text x="390" y="584" text-anchor="middle" font-size="12" font-weight="500" fill="#1a3d35" font-family="DM Sans, sans-serif">Scalable: works from 10 to 1000+ people</text>
+      <path d="M390 540 L390 560" stroke="#b0aba4" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr2)" fill="none"/>
+
+      <!-- Legend -->
+      <line x1="30" y1="612" x2="54" y2="612" stroke="#6b6860" stroke-width="1"/>
+      <text x="60" y="616" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif">Direct access / automated</text>
+      <line x1="280" y1="612" x2="304" y2="612" stroke="#b0aba4" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="310" y="616" font-size="11" fill="#6b6860" font-family="DM Sans, sans-serif">Limited access to form</text>
+    </svg>
+  </div>
+
+  <div class="section-card">
+    <h3>Where we eliminate manual work</h3>
+    <ul>
+      <li>Goal data is pulled automatically — the employee opens the form with goals already populated. Estimated saving: 30–40% of completion time.</li>
+      <li>Review cards are created automatically at the start of each cycle — HR does not manually create 70 cards.</li>
+      <li>The final score is calculated automatically using a formula — HR does not consolidate spreadsheets by hand.</li>
+      <li>Deadline and status-change notifications are sent automatically via Zapier → Slack / Email.</li>
+      <li>Export to Google Sheets after the cycle closes — automatically via Zapier.</li>
+    </ul>
+
+    <h3>Where we ensure consistency</h3>
+    <ul>
+      <li>A single template — everyone completes the same form with the same questions and rating scales.</li>
+      <li>Behavioral anchors for each value level eliminate subjectivity and inconsistencies during calibration.</li>
+      <li>A single formula for calculating the final rating — the result does not depend on the individual manager.</li>
+      <li>Statuses: Not Started → In Progress → Submitted → Manager Review → Completed.</li>
+      <li>Calibration is based on the same data — gaps between managers are immediately visible.</li>
+    </ul>
+
+    <h3>Scalability</h3>
+    <div class="scalable-badge">✦ Scalable architecture</div>
+    <p>This architecture is scalable — the company can grow without changing its HR stack. As the team grows from 70 to 300+ people, only the number of cards changes, not the structure of the system. New values or adjustments to formula weights are made in one place. Notion + Zapier + Google Sheets is a stack that does not need to be replaced until the enterprise level.</p>
+
+    <h3>Areas for process growth</h3>
+    <p>When resources allow — deepen the Development section: each development area is linked to specific actions for both the employee and manager, with a deadline. At the start of the next cycle, the first question is: was the development plan completed? This closes the loop between the review and actual development. For the first cycle, this level of detail is excessive — what matters more is launching the process and achieving completion rate. The architecture already supports this expansion.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- METRICS -->
+  <h2>Success metrics</h2>
+  <p style="font-size:14px;color:var(--ink-muted);margin-bottom:20px;">Three categories: Process Health (did we do this?), Quality &amp; Consistency (did we do this fairly?), Business Impact (did the business improve?).</p>
+
+  <div class="metrics-section">
+    <div class="metrics-group-title">Process Health</div>
+    <div class="metrics-grid">
+      <div class="metrics-header">Metric</div>
+      <div class="metrics-header">What we measure</div>
+      <div class="metrics-header">Target</div>
+      <div class="metrics-cell name">Completion Rate</div>
+      <div class="metrics-cell desc">% of reviews completed by the deadline</div>
+      <div class="metrics-cell goal">&gt;90% (vs current 40%)</div>
+      <div class="metrics-cell name">Time-to-Complete</div>
+      <div class="metrics-cell desc">Average time from launch to form submission</div>
+      <div class="metrics-cell goal">Reduction through templates</div>
+      <div class="metrics-cell name">UX Survey (NPS)</div>
+      <div class="metrics-cell desc">Ease-of-use rating for the new form (1–10)</div>
+      <div class="metrics-cell goal">&gt;8</div>
+      <div class="metrics-cell name">Manager Engagement</div>
+      <div class="metrics-cell desc">% of managers providing meaningful comments</div>
+      <div class="metrics-cell goal">Substantive feedback</div>
+    </div>
+  </div>
+
+  <div class="metrics-section">
+    <div class="metrics-group-title">Quality &amp; Consistency</div>
+    <div class="metrics-grid">
+      <div class="metrics-header">Metric</div>
+      <div class="metrics-header">What we measure</div>
+      <div class="metrics-header">Signal</div>
+      <div class="metrics-cell name">Rating Distribution</div>
+      <div class="metrics-cell desc">Distribution of ratings across the 1–5 scale</div>
+      <div class="metrics-cell goal">Bell curve — identify genuine high potentials</div>
+      <div class="metrics-cell name">Self-Manager Alignment</div>
+      <div class="metrics-cell desc">Gap between self-assessment and manager rating</div>
+      <div class="metrics-cell goal">Large gap = issue in 1:1s</div>
+      <div class="metrics-cell name">Values Heatmap</div>
+      <div class="metrics-cell desc">Which values are underperforming across teams</div>
+      <div class="metrics-cell goal">Signal for targeted development</div>
+    </div>
+  </div>
+
+  <div class="metrics-section">
+    <div class="metrics-group-title">Business Impact</div>
+    <div class="metrics-grid">
+      <div class="metrics-header">Metric</div>
+      <div class="metrics-header">What we measure</div>
+      <div class="metrics-header">Signal</div>
+      <div class="metrics-cell name">Correlation with OKRs</div>
+      <div class="metrics-cell desc">Alignment of high ratings with goal completion — by employee and by department</div>
+      <div class="metrics-cell goal">Breakdown = performance system is not working</div>
+      <div class="metrics-cell name">Retention of High Performers</div>
+      <div class="metrics-cell desc">Turnover among employees with top ratings</div>
+      <div class="metrics-cell goal">Top performers leaving = no visible development path</div>
+      <div class="metrics-cell name">Promotion Readiness</div>
+      <div class="metrics-cell desc">% of employees ready for promotion</div>
+      <div class="metrics-cell goal">Data for talent decisions</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- RISKS -->
+  <h2>Risk map</h2>
+
+  <table class="risk-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Risk</th>
+        <th>Mitigation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="risk-category">Data privacy</td>
+        <td class="risk-desc">In Notion it is difficult to restrict row-level access — an employee may accidentally see someone else's review through search.</td>
+        <td class="risk-mit">Filtered Views with personal links, or Notion Sites / Fillout for data entry without access to the main database.</td>
+      </tr>
+      <tr>
+        <td class="risk-category">Technical failure</td>
+        <td class="risk-desc">Zapier/Make breaks down — data from the task tracker or to Google Sheets does not transfer.</td>
+        <td class="risk-mit">Error alerts in Slack for the HR admin. Manual input instructions as a fallback.</td>
+      </tr>
+      <tr>
+        <td class="risk-category">Low engagement</td>
+        <td class="risk-desc">The same 60% of employees continue to miss deadlines.</td>
+        <td class="risk-mit">Gamification, mobile-first form design, hard link between review completion and bonuses or L&amp;D budget.</td>
+      </tr>
+      <tr>
+        <td class="risk-category">Subjectivity (Bias)</td>
+        <td class="risk-desc">Managers rate based on personal preference rather than results.</td>
+        <td class="risk-mit">Calibration Sessions. Behavioral anchors. Evidence field for each rating.</td>
+      </tr>
+      <tr>
+        <td class="risk-category">Low quality of goals</td>
+        <td class="risk-desc">Goals in the task tracker are vague — data in the form becomes meaningless.</td>
+        <td class="risk-mit">Audit of goals together with managers before the first cycle launches.</td>
+      </tr>
+      <tr>
+        <td class="risk-category">Loss of trust</td>
+        <td class="risk-desc">Review results did not lead to real decisions — people stop taking the process seriously.</td>
+        <td class="risk-mit">Before launch, align with the CEO on how results connect to decisions, and communicate this clearly to the team.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="bottom-bar">
+    <a href="/task" class="back">← Back to Navigation</a>
+    <a href="/task/task2" class="btn-next">Go to Next Task →</a>
+  </div>
+
+</div>
+</body>
+</html>
