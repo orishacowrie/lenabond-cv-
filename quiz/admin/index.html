@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR AI Quiz · Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --bg-elevated: #1a1a1a;
+    --accent: #c8f04d;
+    --accent-dark: #a8d12d;
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --border: #2a2a2a;
+    --danger: #ff5c5c;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  body {
+    padding: 32px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .mono { font-family: 'DM Mono', monospace; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .login-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .login-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+  .login-input {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 280px;
+    margin-bottom: 12px;
+    font-family: 'DM Mono', monospace;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .login-input:focus { border-color: var(--accent); }
+  .login-error {
+    color: var(--danger);
+    font-size: 13px;
+    margin-bottom: 12px;
+    min-height: 16px;
+  }
+  .login-btn {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .login-btn:hover { background: var(--accent-dark); }
+
+  /* DASHBOARD HEADER */
+  .dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dash-title-block .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .dash-title-block h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .dash-logout {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .dash-logout:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  /* TOP STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .stat-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .stat-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* LEVEL DIST */
+  .level-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 90px 60px;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .level-row:last-child { border-bottom: none; }
+  .level-emoji { font-size: 18px; text-align: center; }
+  .level-name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .level-name .range {
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+  .level-bar-wrap {
+    background: var(--border);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .level-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .level-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    text-align: right;
+  }
+  .level-count .pct { color: var(--text-muted); margin-left: 4px; }
+
+  /* DAILY CHART */
+  .daily-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 140px;
+    padding: 12px 0 24px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .day-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+  .day-bar-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    max-width: 32px;
+  }
+  .day-bar {
+    width: 100%;
+    background: var(--accent);
+    border-radius: 3px 3px 0 0;
+    min-height: 2px;
+    transition: height 0.4s ease;
+    position: relative;
+  }
+  .day-bar.empty { background: var(--border); }
+  .day-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    transform: rotate(-30deg);
+    white-space: nowrap;
+    transform-origin: center;
+  }
+  .day-count-tip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .day-col:hover .day-count-tip { opacity: 1; }
+
+  /* QUESTION BREAKDOWN */
+  .question-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+  }
+  .question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .question-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .question-text {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  .answer-row {
+    display: grid;
+    grid-template-columns: 18px 1fr 60px 50px;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .answer-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .answer-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .answer-bar-wrap {
+    background: var(--border);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .answer-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .answer-bar.low { background: var(--text-dim); }
+  .answer-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  /* HARDEST */
+  .hard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .hard-item {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .hard-item-text { font-size: 14px; line-height: 1.4; }
+  .hard-item-text .q-num {
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    margin-right: 8px;
+  }
+  .hard-item-stat {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--danger);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* STATES */
+  .loading {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 60px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+  }
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 40px 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  @media (max-width: 720px) {
+    .stats-row { grid-template-columns: 1fr; }
+    .dash-title-block h1 { font-size: 22px; }
+    .level-row { grid-template-columns: 20px 1fr 70px 50px; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="screen active" id="login-screen">
+    <div class="login-eyebrow">Admin · Analytics</div>
+    <h1 class="login-title">HR AI Quiz Dashboard</h1>
+    <input
+      type="password"
+      class="login-input"
+      id="password-input"
+      placeholder="enter password"
+      autocomplete="off"
+    >
+    <div class="login-error" id="login-error"></div>
+    <button class="login-btn" onclick="tryLogin()">Enter →</button>
+  </div>
+
+  <!-- DASHBOARD SCREEN -->
+  <div class="screen" id="dashboard-screen">
+    <div class="dash-header">
+      <div class="dash-title-block">
+        <div class="eyebrow">HR AI Quiz · Analytics</div>
+        <h1>Dashboard</h1>
+      </div>
+      <button class="dash-logout" onclick="logout()">Log out</button>
+    </div>
+
+    <div id="loading" class="loading">Loading data…</div>
+
+    <div id="dashboard-content" style="display:none;">
+      <!-- TOP STATS -->
+      <section class="section">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-label">Total responses</div>
+            <div class="stat-value" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Average score</div>
+            <div class="stat-value" id="stat-avg">0</div>
+            <div class="stat-sub">out of 30</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Last response</div>
+            <div class="stat-value" id="stat-last">—</div>
+            <div class="stat-sub" id="stat-last-time"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEVEL DISTRIBUTION -->
+      <section class="section">
+        <div class="section-title">Level distribution</div>
+        <div id="level-dist"></div>
+      </section>
+
+      <!-- DAILY -->
+      <section class="section">
+        <div class="section-title">Completions · last 14 days</div>
+        <div class="daily-chart" id="daily-chart"></div>
+      </section>
+
+      <!-- HARDEST QUESTIONS -->
+      <section class="section">
+        <div class="section-title">Hardest questions · most "D" answers</div>
+        <div class="hard-list" id="hard-list"></div>
+      </section>
+
+      <!-- QUESTION BREAKDOWN -->
+      <section class="section">
+        <div class="section-title">Per-question breakdown</div>
+        <div id="question-breakdown"></div>
+      </section>
+    </div>
+  </div>
+
+<script>
+  // CONFIG
+  const ADMIN_PASSWORD = 'lena-quiz-admin';
+  const SUPABASE_URL = 'https://pydpfrersygaggmehgla.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5ZHBmcmVyc3lnYWdnbWVoZ2xhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzQ2NTEsImV4cCI6MjA5MjcxMDY1MX0.pV1XQl_NkiTfa8FF_3PztDpIO2kg-FYBat3xgYORDj4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // SHARED QUIZ DATA (mirrored from index.html — keep in sync if questions change)
+  const QUESTIONS = [
+    { text: "How often do you use AI tools at work?", opts: ["Every day, it's part of my workflow", "A few times a week", "Tried it a couple of times", "I watched a webinar about it once"] },
+    { text: "Do you have a paid AI subscription?", opts: ["Yes, more than one", "Yes, one", "Planning to get one", "The free version works… mostly"] },
+    { text: "When you write a prompt, you usually:", opts: ["Use RCJF — role, context, job, format", "Write a detailed request", "Type a question like you would Google it", "Write 'make this better' when the result doesn't look right"] },
+    { text: "What is a context window?", opts: ["How much text the AI can process in one session", "The chat history", "Some kind of technical setting", "The window where you type"] },
+    { text: "Have you ever set up custom instructions or a system prompt in your AI?", opts: ["Yes, I have several different setups", "Yes, once", "I didn't know that was possible", "I just open the chat and start typing"] },
+    { text: "Do you have a GitHub account?", opts: ["Yes, and there's actually something in there", "Yes, but it's empty", "I signed up once and never went back", "Isn't that where developers live?"] },
+    { text: "Have you heard of AI building tools like Cursor, Lovable, v0, or similar?", opts: ["Yes, I use one of them", "Yes, I've played with one", "I've seen the name somewhere", "Sounds like a sports brand"] },
+    { text: "Have you ever built anything with AI — a bot, an automation, a workflow?", opts: ["Yes, and it's actually running somewhere", "Yes, but only as a one-off experiment", "I have a list of things I want to build", "Does a really good prompt count?"] },
+    { text: "Do you know what Railway, Vercel, or Render are?", opts: ["Yes, I host things there", "I've watched tutorials about it", "I know the names", "Sounds like something from logistics"] },
+    { text: "Do you know what an API key is?", opts: ["Yes, I've used one", "I know what it does, but haven't used one", "I've heard the term but couldn't really explain it", "Sounds like a password for something"] }
+  ];
+
+  const LEVELS = [
+    { num: 1, min: 0,  max: 7,  emoji: "🪷", title: "The AI Humanist" },
+    { num: 2, min: 8,  max: 14, emoji: "☕", title: "The AI Strategist" },
+    { num: 3, min: 15, max: 20, emoji: "🧩", title: "The AI Prompt Architect" },
+    { num: 4, min: 21, max: 26, emoji: "🤖", title: "The AI Automation Ninja" },
+    { num: 5, min: 27, max: 30, emoji: "🚀", title: "The AI Visionary Engineer" }
+  ];
+
+  const LETTERS = ['A', 'B', 'C', 'D'];
+
+  // AUTH
+  function tryLogin() {
+    const input = document.getElementById('password-input');
+    const error = document.getElementById('login-error');
+    if (input.value === ADMIN_PASSWORD) {
+      sessionStorage.setItem('hr-quiz-admin-auth', '1');
+      enterDashboard();
+    } else {
+      error.textContent = 'Wrong password';
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem('hr-quiz-admin-auth');
+    document.getElementById('dashboard-screen').classList.remove('active');
+    document.getElementById('login-screen').classList.add('active');
+    document.getElementById('password-input').value = '';
+    document.getElementById('login-error').textContent = '';
+  }
+
+  function enterDashboard() {
+    document.getElementById('login-screen').classList.remove('active');
+    document.getElementById('dashboard-screen').classList.add('active');
+    loadData();
+  }
+
+  // ENTER key on password input
+  document.getElementById('password-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tryLogin();
+  });
+
+  // Auto-login if previously authenticated this session
+  if (sessionStorage.getItem('hr-quiz-admin-auth') === '1') {
+    enterDashboard();
+  }
+
+  // DATA
+  async function loadData() {
+    const { data: results, error: rErr } = await db
+      .from('results')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (rErr) {
+      console.error('Failed to load results:', rErr);
+      document.getElementById('loading').textContent = 'Error loading data. Check console.';
+      return;
+    }
+
+    const { data: answers, error: aErr } = await db
+      .from('answers')
+      .select('*');
+
+    if (aErr) {
+      console.error('Failed to load answers:', aErr);
+      document.getElementById('loading').textContent = 'Error loading data. Check console.';
+      return;
+    }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('dashboard-content').style.display = 'block';
+
+    renderTopStats(results);
+    renderLevelDist(results);
+    renderDaily(results);
+    renderHardest(answers);
+    renderBreakdown(answers);
+  }
+
+  // TOP STATS
+  function renderTopStats(results) {
+    const total = results.length;
+    document.getElementById('stat-total').textContent = total;
+
+    if (total === 0) {
+      document.getElementById('stat-avg').textContent = '—';
+      document.getElementById('stat-last').textContent = '—';
+      return;
+    }
+
+    const avg = results.reduce((s, r) => s + (r.score || 0), 0) / total;
+    document.getElementById('stat-avg').textContent = avg.toFixed(1);
+
+    const last = results[0]; // already sorted desc by created_at
+    const lastDate = new Date(last.created_at);
+    const now = new Date();
+    const diffMs = now - lastDate;
+    const diffMin = Math.round(diffMs / 60000);
+    const diffH = Math.round(diffMs / 3600000);
+    const diffD = Math.round(diffMs / 86400000);
+    let label = '';
+    if (diffMin < 1) label = 'just now';
+    else if (diffMin < 60) label = diffMin + ' min ago';
+    else if (diffH < 24) label = diffH + ' h ago';
+    else label = diffD + ' d ago';
+    document.getElementById('stat-last').textContent = (last.score ?? '—') + '/30';
+    document.getElementById('stat-last-time').textContent = label;
+  }
+
+  // LEVEL DISTRIBUTION
+  function renderLevelDist(results) {
+    const total = results.length;
+    const counts = LEVELS.map(l => ({
+      ...l,
+      count: results.filter(r => r.level === l.num).length
+    }));
+    const max = Math.max(...counts.map(c => c.count), 1);
+
+    const html = counts.map(c => {
+      const pct = total ? (c.count / total * 100) : 0;
+      const barPct = (c.count / max * 100);
+      return `
+        <div class="level-row">
+          <div class="level-emoji">${c.emoji}</div>
+          <div class="level-name">
+            ${c.title}<span class="range">${c.min}–${c.max}</span>
+          </div>
+          <div class="level-bar-wrap">
+            <div class="level-bar" style="width: ${barPct}%"></div>
+          </div>
+          <div class="level-count">${c.count}<span class="pct">${pct.toFixed(0)}%</span></div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('level-dist').innerHTML = html;
+  }
+
+  // DAILY CHART
+  function renderDaily(results) {
+    const days = 14;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const buckets = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      buckets.push({ date: d, count: 0 });
+    }
+
+    results.forEach(r => {
+      const rd = new Date(r.created_at);
+      rd.setHours(0, 0, 0, 0);
+      const idx = buckets.findIndex(b => b.date.getTime() === rd.getTime());
+      if (idx >= 0) buckets[idx].count++;
+    });
+
+    const max = Math.max(...buckets.map(b => b.count), 1);
+    const html = buckets.map(b => {
+      const h = (b.count / max * 100);
+      const dayLabel = b.date.toLocaleDateString('en', { day: 'numeric', month: 'short' });
+      return `
+        <div class="day-col">
+          <div class="day-bar-wrap">
+            <div class="day-bar ${b.count === 0 ? 'empty' : ''}" style="height: ${h}%">
+              ${b.count > 0 ? `<div class="day-count-tip">${b.count} · ${dayLabel}</div>` : ''}
+            </div>
+          </div>
+          <div class="day-label">${dayLabel}</div>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('daily-chart').innerHTML = html;
+  }
+
+  // HARDEST QUESTIONS
+  function renderHardest(answers) {
+    // For each question, % of "D" (answer_index === 3)
+    const stats = [];
+    for (let q = 1; q <= 10; q++) {
+      const qAns = answers.filter(a => a.question_number === q);
+      if (qAns.length === 0) {
+        stats.push({ q, dPct: 0, total: 0 });
+        continue;
+      }
+      const dCount = qAns.filter(a => a.answer_index === 3).length;
+      stats.push({ q, dPct: dCount / qAns.length * 100, total: qAns.length, dCount });
+    }
+    const top = stats
+      .filter(s => s.total > 0)
+      .sort((a, b) => b.dPct - a.dPct)
+      .slice(0, 3);
+
+    if (top.length === 0) {
+      document.getElementById('hard-list').innerHTML =
+        '<div class="empty">No data yet</div>';
+      return;
+    }
+
+    const html = top.map(s => `
+      <div class="hard-item">
+        <div class="hard-item-text">
+          <span class="q-num">Q${s.q}</span>${QUESTIONS[s.q - 1].text}
+        </div>
+        <div class="hard-item-stat">${s.dPct.toFixed(0)}% picked D · ${s.dCount}/${s.total}</div>
+      </div>
+    `).join('');
+    document.getElementById('hard-list').innerHTML = html;
+  }
+
+  // PER-QUESTION BREAKDOWN
+  function renderBreakdown(answers) {
+    const html = QUESTIONS.map((q, qi) => {
+      const qNum = qi + 1;
+      const qAns = answers.filter(a => a.question_number === qNum);
+      const total = qAns.length;
+
+      const optionsHtml = q.opts.map((opt, oi) => {
+        const count = qAns.filter(a => a.answer_index === oi).length;
+        const pct = total ? (count / total * 100) : 0;
+        const isLow = pct < 5;
+        return `
+          <div class="answer-row">
+            <div class="answer-letter">${LETTERS[oi]}</div>
+            <div class="answer-text">${opt}</div>
+            <div class="answer-bar-wrap">
+              <div class="answer-bar ${isLow ? 'low' : ''}" style="width: ${pct}%"></div>
+            </div>
+            <div class="answer-count">${count} · ${pct.toFixed(0)}%</div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <div class="question-card">
+          <div class="question-header">
+            <div class="question-num">Q${qNum}</div>
+            <div class="question-text">${q.text}</div>
+          </div>
+          ${optionsHtml}
+        </div>
+      `;
+    }).join('');
+    document.getElementById('question-breakdown').innerHTML = html;
+  }
+</script>
+</body>
+</html>
