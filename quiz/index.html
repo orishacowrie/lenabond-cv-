@@ -343,6 +343,67 @@
     color: var(--text);
   }
 
+  /* DISTRIBUTION BLOCK (on result screen) */
+  .dist-block {
+    margin: 32px 0 8px;
+  }
+  .dist-label {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .dist-row {
+    display: grid;
+    grid-template-columns: 22px 1fr 60px 48px;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .dist-emoji { font-size: 16px; text-align: center; }
+  .dist-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .dist-row.you .dist-name {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .dist-bar-wrap {
+    background: var(--border);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .dist-bar {
+    height: 100%;
+    background: var(--text-dim);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .dist-bar.you { background: var(--accent); }
+  .dist-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+  .dist-row.you .dist-pct { color: var(--accent); }
+  .you-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+
   .result-divider {
     height: 1px;
     background: var(--border);
@@ -504,6 +565,9 @@
 
     <!-- Share section -->
     <button class="btn-primary" onclick="copyResult()">Copy my result</button>
+
+    <!-- Distribution block (populated by JS) -->
+    <div id="dist-block" class="dist-block"></div>
 
     <!-- Contact section -->
     <div class="result-contact">
@@ -712,10 +776,54 @@
 
     showScreen('screen-result');
 
+    // Render distribution skeleton (with user's level highlighted) immediately
+    const levelNumber = LEVELS.indexOf(level) + 1;
+    renderDistributionBlock(levelNumber);
+    // Then load real data and animate bars
+    loadDistribution().catch(err => {
+      console.error('[Supabase] distribution load failed:', err);
+    });
+
     // Save to DB (fire-and-forget; UI doesn't wait)
     saveResultToSupabase(score, level).catch(err => {
       console.error('[Supabase] save failed:', err);
     });
+  }
+
+  function renderDistributionBlock(userLevelNum) {
+    const html = `
+      <div class="dist-label">How others scored</div>
+      ${LEVELS.map((l, i) => {
+        const num = i + 1;
+        const isYou = num === userLevelNum;
+        return `
+          <div class="dist-row ${isYou ? 'you' : ''}">
+            <div class="dist-emoji">${l.emoji}</div>
+            <div class="dist-name">${l.title}${isYou ? '<span class="you-badge">YOU</span>' : ''}</div>
+            <div class="dist-bar-wrap">
+              <div class="dist-bar ${isYou ? 'you' : ''}" id="dist-bar-${num}" style="width: 0%"></div>
+            </div>
+            <div class="dist-pct" id="dist-pct-${num}">0%</div>
+          </div>
+        `;
+      }).join('')}
+    `;
+    document.getElementById('dist-block').innerHTML = html;
+  }
+
+  async function loadDistribution() {
+    const { data, error } = await db.from('results').select('level');
+    if (error) throw error;
+
+    const total = data.length;
+    for (let num = 1; num <= 5; num++) {
+      const count = data.filter(r => r.level === num).length;
+      const pct = total ? (count / total * 100) : 0;
+      const barEl = document.getElementById(`dist-bar-${num}`);
+      const pctEl = document.getElementById(`dist-pct-${num}`);
+      if (barEl) barEl.style.width = pct.toFixed(1) + '%';
+      if (pctEl) pctEl.textContent = pct.toFixed(0) + '%';
+    }
   }
 
   async function saveResultToSupabase(score, level) {
