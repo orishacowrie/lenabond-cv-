@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR AI Maturity Quiz · Lena Bond</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --bg-elevated: #1a1a1a;
+    --accent: #c8f04d;
+    --accent-dark: #a8d12d;
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --text-dim: #555;
+    --border: #2a2a2a;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 960px;
+  }
+
+  /* INTRO LAYOUT (2/3 + 1/3) */
+  #screen-intro .intro-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  #screen-question, #screen-result {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .mono { font-family: 'DM Mono', monospace; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  .progress-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    min-width: 48px;
+    text-align: right;
+  }
+
+  /* INTRO SCREEN */
+  .intro-greeting {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .intro-title {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .intro-title .accent { color: var(--accent); }
+  .intro-sub {
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .intro-meta {
+    display: flex;
+    gap: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .intro-meta span::before {
+    content: "→ ";
+    color: var(--accent);
+  }
+
+  /* AUTHOR SIDEBAR */
+  .sidebar {
+    padding-top: 8px;
+  }
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .sidebar-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .sidebar-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sidebar-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .sidebar-bio {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+  .sidebar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'DM Mono', monospace;
+    border-bottom: 1px dashed var(--accent-dark);
+    padding-bottom: 2px;
+  }
+  .sidebar-link:hover { color: var(--text); border-bottom-color: var(--text); }
+
+  /* BUTTONS */
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 16px;
+    padding: 16px 32px;
+    border-radius: 8px;
+    transition: background 0.15s ease, transform 0.05s ease;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled {
+    background: var(--border);
+    color: var(--text-dim);
+    cursor: not-allowed;
+  }
+  .btn-primary:disabled:hover { background: var(--border); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-weight: 500;
+    font-size: 15px;
+    padding: 14px 24px;
+    border-radius: 8px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    background: rgba(200, 240, 77, 0.05);
+  }
+
+  /* QUESTIONS */
+  .q-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+  .q-text {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 36px;
+    letter-spacing: -0.01em;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-elevated);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    text-align: left;
+    width: 100%;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .option:hover {
+    border-color: var(--accent);
+    background: rgba(200, 240, 77, 0.04);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: rgba(200, 240, 77, 0.08);
+  }
+  .option-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .option.selected .option-letter { color: var(--accent); }
+
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .back-link {
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 8px 0;
+  }
+  .back-link:hover { color: var(--text); }
+  .back-link.hidden { visibility: hidden; }
+
+  /* RESULT */
+  .result-emoji {
+    font-size: 72px;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  .result-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .result-title {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .result-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+  .result-score strong { color: var(--accent); font-weight: 500; }
+  .result-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 32px;
+  }
+  .result-block {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 18px;
+    margin-bottom: 24px;
+  }
+  .result-block-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .result-block-text {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  /* DISTRIBUTION BLOCK (on result screen) */
+  .dist-block {
+    margin: 32px 0 8px;
+  }
+  .dist-label {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .dist-row {
+    display: grid;
+    grid-template-columns: 22px 1fr 60px 48px;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .dist-emoji { font-size: 16px; text-align: center; }
+  .dist-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .dist-row.you .dist-name {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .dist-bar-wrap {
+    background: var(--border);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .dist-bar {
+    height: 100%;
+    background: var(--text-dim);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  .dist-bar.you { background: var(--accent); }
+  .dist-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+  .dist-row.you .dist-pct { color: var(--accent); }
+  .you-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+
+  .result-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  .result-contact {
+    margin-top: 48px;
+    margin-bottom: 8px;
+  }
+  .result-contact-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .result-contact-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .actions a, .actions button {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .restart {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-top: 24px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--text-dim);
+  }
+  .restart:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent);
+    color: var(--bg);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* SCREEN MANAGEMENT */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  @media (max-width: 760px) {
+    #screen-intro .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .sidebar {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+  }
+  @media (max-width: 520px) {
+    .intro-title { font-size: 32px; }
+    .q-text { font-size: 22px; }
+    .result-title { font-size: 30px; }
+    .result-emoji { font-size: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- INTRO SCREEN -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-grid">
+      <div class="intro-main">
+        <div class="intro-greeting">HR · AI Maturity Quiz</div>
+        <h1 class="intro-title">How AI-fluent are you<br>as an <span class="accent">HR pro</span>?</h1>
+        <p class="intro-sub">10 questions. About 3 minutes. No right or wrong answers — just where you are on the AI curve.</p>
+        <div class="intro-meta">
+          <span>10 questions</span>
+          <span>~3 min</span>
+          <span>5 levels</span>
+        </div>
+        <button class="btn-primary" onclick="startQuiz()">Start the quiz →</button>
+      </div>
+
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-avatar">L</div>
+          <div>
+            <div class="sidebar-eyebrow">Built by</div>
+            <div class="sidebar-name">Lena Bond</div>
+          </div>
+        </div>
+        <p class="sidebar-bio">Bringing AI into HR while keeping it human.</p>
+        <a class="sidebar-link" href="https://linkedin.com/in/elenabondareva/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </aside>
+    </div>
+  </div>
+
+  <!-- QUESTION SCREEN -->
+  <div class="screen" id="screen-question">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-text" id="progress-text">0 / 10</div>
+    </div>
+    <div class="q-meta" id="q-meta">Question 1 of 10</div>
+    <h2 class="q-text" id="q-text"></h2>
+    <div class="options" id="options"></div>
+    <div class="q-nav">
+      <div class="back-link" id="back-link" onclick="goBack()">← Back</div>
+      <button class="btn-primary" id="next-btn" onclick="goNext()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="screen" id="screen-result">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-status" id="result-status"></div>
+    <h2 class="result-title" id="result-title"></h2>
+    <div class="result-score" id="result-score"></div>
+    <p class="result-desc" id="result-desc"></p>
+
+    <div class="result-block">
+      <div class="result-block-label">Your superpower</div>
+      <div class="result-block-text" id="result-superpower"></div>
+    </div>
+
+    <div class="result-block">
+      <div class="result-block-label">Your next move</div>
+      <div class="result-block-text" id="result-next"></div>
+    </div>
+
+    <div class="result-divider"></div>
+
+    <!-- Share section -->
+    <button class="btn-primary" onclick="copyResult()">Copy my result</button>
+
+    <!-- Distribution block (populated by JS) -->
+    <div id="dist-block" class="dist-block"></div>
+
+    <!-- Contact section -->
+    <div class="result-contact">
+      <div class="result-contact-title">Want to talk?</div>
+      <p class="result-contact-text">If your HR team needs an AI upgrade — let's talk. I'm open to opportunities.</p>
+      <a class="btn-secondary" href="https://linkedin.com/in/elenabondareva/" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+    </div>
+
+    <div class="restart" onclick="restartQuiz()">↺ Take it again</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+  // SUPABASE
+  const SUPABASE_URL = 'https://pydpfrersygaggmehgla.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5ZHBmcmVyc3lnYWdnbWVoZ2xhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzQ2NTEsImV4cCI6MjA5MjcxMDY1MX0.pV1XQl_NkiTfa8FF_3PztDpIO2kg-FYBat3xgYORDj4';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const QUESTIONS = [
+    {
+      text: "How often do you use AI tools at work?",
+      opts: ["Every day, it's part of my workflow", "A few times a week", "Tried it a couple of times", "I watched a webinar about it once"]
+    },
+    {
+      text: "Do you have a paid AI subscription?",
+      opts: ["Yes, more than one", "Yes, one", "Planning to get one", "The free version works… mostly"]
+    },
+    {
+      text: "When you write a prompt, you usually:",
+      opts: ["Use RCJF — role, context, job, format", "Write a detailed request", "Type a question like you would Google it", "Write 'make this better' when the result doesn't look right"]
+    },
+    {
+      text: "What is a context window?",
+      opts: ["How much text the AI can process in one session", "The chat history", "Some kind of technical setting", "The window where you type"]
+    },
+    {
+      text: "Have you ever set up custom instructions or a system prompt in your AI?",
+      opts: ["Yes, I have several different setups", "Yes, once", "I didn't know that was possible", "I just open the chat and start typing"]
+    },
+    {
+      text: "Do you have a GitHub account?",
+      opts: ["Yes, and there's actually something in there", "Yes, but it's empty", "I signed up once and never went back", "Isn't that where developers live?"]
+    },
+    {
+      text: "Have you heard of AI building tools like Cursor, Lovable, v0, or similar?",
+      opts: ["Yes, I use one of them", "Yes, I've played with one", "I've seen the name somewhere", "Sounds like a sports brand"]
+    },
+    {
+      text: "Have you ever built anything with AI — a bot, an automation, a workflow?",
+      opts: ["Yes, and it's actually running somewhere", "Yes, but only as a one-off experiment", "I have a list of things I want to build", "Does a really good prompt count?"]
+    },
+    {
+      text: "Do you know what Railway, Vercel, or Render are?",
+      opts: ["Yes, I host things there", "I've watched tutorials about it", "I know the names", "Sounds like something from logistics"]
+    },
+    {
+      text: "Do you know what an API key is?",
+      opts: ["Yes, I've used one", "I know what it does, but haven't used one", "I've heard the term but couldn't really explain it", "Sounds like a password for something"]
+    }
+  ];
+
+  const SCORES = [3, 2, 1, 0];
+
+  const LEVELS = [
+    {
+      min: 0, max: 7,
+      emoji: "🪷",
+      status: "AI Explorer",
+      title: "The AI Humanist",
+      desc: "You are the soul of the organization. While everyone else is arguing with chatbots, you are the one actually resolving team conflicts and managing turnover with human intuition that no algorithm can replicate. You use AI sparingly and thoughtfully, ensuring the Human in Human Resources stays front and center.",
+      superpower: "High Emotional Intelligence (EQ).",
+      next: "You're just 2–3 prompts away from your next level. Keep that human touch — it's the only thing AI can't copy!"
+    },
+    {
+      min: 8, max: 14,
+      emoji: "☕",
+      status: "Innovation Curator",
+      title: "The AI Strategist",
+      desc: "You're in the Strategic Research phase. Your 'AI stuff' folder is basically a goldmine of future efficiency. You don't jump on every hype train immediately because you're a curator of quality. You are the sleeper agent for innovation — waiting for the perfect moment to deploy a tool that actually works.",
+      superpower: "Strategic patience and a sharp eye for trends.",
+      next: "Open that folder! One successful automation will turn you from a researcher into an office legend."
+    },
+    {
+      min: 15, max: 20,
+      emoji: "🧩",
+      status: "The Human–AI Translator",
+      title: "The AI Prompt Architect",
+      desc: "You speak both Human and Machine fluently. You've mastered the RCJF rule and probably have a favorite custom instruction that makes your AI sound like a witty assistant. You are the bridge between your team's needs and the power of the models. You're officially one webhook away from total office domination.",
+      superpower: "Precision communication and clarity of thought.",
+      next: "Connect one of your prompts to a real workflow — try a simple automation!"
+    },
+    {
+      min: 21, max: 26,
+      emoji: "🤖",
+      status: "Tech-Forward HR Leader",
+      title: "The AI Automation Ninja",
+      desc: "You came for the productivity, but you stayed for the magic. You've built things that actually work, and now you're the go-to person for fixing broken processes. You're the one saving the company dozens of hours a week, and you've stopped pushing back because you're too busy scaling.",
+      superpower: "Turning chaos into scalable, automated workflows.",
+      next: "Start a Pilot AI Group — you're already doing the work of a Chief AI Officer."
+    },
+    {
+      min: 27, max: 30,
+      emoji: "🚀",
+      status: "HR Architect (2030 Edition)",
+      title: "The AI Visionary Engineer",
+      desc: "Let's be honest: are you even still in HR, or are you a secret developer? You're deploying scripts, managing API keys, and probably teaching the IT department a thing or two. You aren't just using AI — you are redefining what People Operations looks like in the age of intelligence.",
+      superpower: "Engineering the future of work.",
+      next: "Launch that side project or internal tool. The industry is still catching up to where you were yesterday."
+    }
+  ];
+
+  // STATE
+  let currentQ = 0;
+  let answers = new Array(QUESTIONS.length).fill(null);
+
+  // SCREENS
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function startQuiz() {
+    currentQ = 0;
+    answers = new Array(QUESTIONS.length).fill(null);
+    renderQuestion();
+    showScreen('screen-question');
+  }
+
+  function renderQuestion() {
+    const q = QUESTIONS[currentQ];
+    document.getElementById('q-meta').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+    document.getElementById('q-text').textContent = q.text;
+
+    const letters = ['A', 'B', 'C', 'D'];
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option' + (answers[currentQ] === i ? ' selected' : '');
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+      btn.onclick = () => selectOption(i);
+      opts.appendChild(btn);
+    });
+
+    // Progress
+    const pct = (currentQ / QUESTIONS.length) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${currentQ} / ${QUESTIONS.length}`;
+
+    // Buttons
+    document.getElementById('next-btn').disabled = answers[currentQ] === null;
+    document.getElementById('next-btn').textContent = currentQ === QUESTIONS.length - 1 ? 'See result →' : 'Next →';
+    document.getElementById('back-link').classList.toggle('hidden', currentQ === 0);
+  }
+
+  function selectOption(i) {
+    answers[currentQ] = i;
+    renderQuestion();
+  }
+
+  function goNext() {
+    if (answers[currentQ] === null) return;
+    if (currentQ < QUESTIONS.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  }
+
+  function goBack() {
+    if (currentQ > 0) {
+      currentQ--;
+      renderQuestion();
+    }
+  }
+
+  function calcScore() {
+    return answers.reduce((sum, a) => sum + (a !== null ? SCORES[a] : 0), 0);
+  }
+
+  function getLevel(score) {
+    return LEVELS.find(l => score >= l.min && score <= l.max) || LEVELS[0];
+  }
+
+  function showResult() {
+    const score = calcScore();
+    const level = getLevel(score);
+
+    document.getElementById('result-emoji').textContent = level.emoji;
+    document.getElementById('result-status').textContent = level.status;
+    document.getElementById('result-title').textContent = level.title;
+    document.getElementById('result-score').innerHTML = `Your score: <strong>${score} / 30</strong>`;
+    document.getElementById('result-desc').textContent = level.desc;
+    document.getElementById('result-superpower').textContent = level.superpower;
+    document.getElementById('result-next').textContent = level.next;
+
+    // Fill progress to 100%
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('progress-text').textContent = `${QUESTIONS.length} / ${QUESTIONS.length}`;
+
+    showScreen('screen-result');
+
+    // Render distribution skeleton (with user's level highlighted) immediately
+    const levelNumber = LEVELS.indexOf(level) + 1;
+    renderDistributionBlock(levelNumber);
+    // Then load real data and animate bars
+    loadDistribution().catch(err => {
+      console.error('[Supabase] distribution load failed:', err);
+    });
+
+    // Save to DB (fire-and-forget; UI doesn't wait)
+    saveResultToSupabase(score, level).catch(err => {
+      console.error('[Supabase] save failed:', err);
+    });
+  }
+
+  function renderDistributionBlock(userLevelNum) {
+    const html = `
+      <div class="dist-label">How others scored</div>
+      ${LEVELS.map((l, i) => {
+        const num = i + 1;
+        const isYou = num === userLevelNum;
+        return `
+          <div class="dist-row ${isYou ? 'you' : ''}">
+            <div class="dist-emoji">${l.emoji}</div>
+            <div class="dist-name">${l.title}${isYou ? '<span class="you-badge">YOU</span>' : ''}</div>
+            <div class="dist-bar-wrap">
+              <div class="dist-bar ${isYou ? 'you' : ''}" id="dist-bar-${num}" style="width: 0%"></div>
+            </div>
+            <div class="dist-pct" id="dist-pct-${num}">0%</div>
+          </div>
+        `;
+      }).join('')}
+    `;
+    document.getElementById('dist-block').innerHTML = html;
+  }
+
+  async function loadDistribution() {
+    const { data, error } = await db.from('results').select('level');
+    if (error) throw error;
+
+    const total = data.length;
+    for (let num = 1; num <= 5; num++) {
+      const count = data.filter(r => r.level === num).length;
+      const pct = total ? (count / total * 100) : 0;
+      const barEl = document.getElementById(`dist-bar-${num}`);
+      const pctEl = document.getElementById(`dist-pct-${num}`);
+      if (barEl) barEl.style.width = pct.toFixed(1) + '%';
+      if (pctEl) pctEl.textContent = pct.toFixed(0) + '%';
+    }
+  }
+
+  async function saveResultToSupabase(score, level) {
+    const levelNumber = LEVELS.indexOf(level) + 1; // 1..5
+    const resultId = crypto.randomUUID();
+
+    // 1) Insert into results (no return — we already know the id)
+    const { error: resultErr } = await db
+      .from('results')
+      .insert({
+        id: resultId,
+        score: score,
+        level: levelNumber,
+        level_title: level.title,
+        language: 'en'
+      });
+
+    if (resultErr) {
+      console.error('[Supabase] results insert failed:', resultErr);
+      return;
+    }
+    console.log('[Supabase] result saved, id =', resultId);
+
+    // 2) Insert all answers using known result id
+    const answerRows = answers.map((idx, qi) => ({
+      result_id: resultId,
+      question_number: qi + 1,
+      answer_index: idx,
+      answer_score: SCORES[idx]
+    }));
+
+    const { error: answersErr } = await db
+      .from('answers')
+      .insert(answerRows);
+
+    if (answersErr) {
+      console.error('[Supabase] answers insert failed:', answersErr);
+      return;
+    }
+    console.log('[Supabase] all 10 answers saved');
+  }
+
+  function copyResult() {
+    const score = calcScore();
+    const level = getLevel(score);
+    const text = `🤖 I scored ${score}/30 on the HR AI Maturity Quiz.
+My level: ${level.emoji} ${level.title}
+Curious about yours? → lenabond.com/quiz`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1800);
+    }).catch(() => {
+      alert('Copy failed — please copy manually:\n\n' + text);
+    });
+  }
+
+  function restartQuiz() {
+    startQuiz();
+  }
+</script>
+</body>
+</html>
