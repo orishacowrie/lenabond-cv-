@@ -70,12 +70,19 @@
   .edu-name { font-weight: 600; font-size: 0.9rem; color: var(--white); }
   .edu-detail { font-size: 0.82rem; color: var(--muted); }
 
+  /* ABOUT */
+  .about-text { font-size: 0.95rem; color: #b0b8c4; line-height: 1.8; }
+  .about-text p { margin-bottom: 10px; }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-full { max-width: 860px; margin: 0 auto; padding: 0 48px 80px; }
+
   @media (max-width: 700px) {
     .hero { padding: 32px 20px; }
     .hero-inner { grid-template-columns: 1fr; gap: 20px; }
     .main { grid-template-columns: 1fr; padding: 24px 20px 60px; gap: 0; }
     .contacts-bar { padding: 14px 20px; }
     .hero-text h1 { font-size: 1.8rem; }
+    .about-full { padding: 0 20px 60px; }
   }
 </style>
 </head>
@@ -213,9 +220,10 @@
         <span class="tool-badge">Trello</span>
         <span class="tool-badge">Sage ATS</span>
         <span class="tool-badge">GitHub</span>
-        <span class="tool-badge">Cursor</span>
-        <span class="tool-badge">Claude</span>
-        <span class="tool-badge">AI Tools</span>
+        <span class="tool-badge">Vercel</span>
+        <span class="tool-badge">Cloudflare</span>
+        <span class="tool-badge">Supabase</span>
+        <span class="tool-badge">Claude Code</span>
       </div>
     </div>
 
@@ -236,10 +244,24 @@
       <div class="skills-list">
         <div class="skill-tag">Russian — native</div>
         <div class="skill-tag">English — C1</div>
-        <div class="skill-tag">German — A2</div>
+        <div class="skill-tag">German — A2 (B1 by year end, I promise 😅)</div>
       </div>
     </div>
   </aside>
+</div>
+
+<!-- ABOUT (full width, last) -->
+<div class="about-full">
+  <div class="section">
+    <div class="section-label">A bit about me</div>
+    <div class="about-text">
+      <p>I'm not sure how you feel about overachievers, but I may belong to that group 😄</p>
+      <p>At 15 — Master of Sport in synchronised swimming (regular swimming was just too boring). Then a silver medal at school and honours degree at university — couldn't break the streak.</p>
+      <p>Then I discovered HR — and the overachieving finally found its purpose 😄</p>
+      <p>I fight burnout the classic way: road cycling, 10km ocean swims and mountains (where at least nobody messages "quick call?").</p>
+      <p>When my head is properly aired out — I tinker with Claude Code. Sometimes it even works.</p>
+    </div>
+  </div>
 </div>
 
 <script>
