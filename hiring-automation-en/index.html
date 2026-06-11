@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Automation in Recruitment — 7 Tools for the Entire Hiring Funnel</title>
+<meta name="description" content="7 AI tools for the hiring funnel: from the intake brief to team development. No coding, no platform purchases.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep:#06363B;
+    --teal:#028090;
+    --mint:#02C39A;
+    --tint:#E9F5F5;
+    --ink:#1E293B;
+    --muted:#5B6B7B;
+    --ice:#9FE8D8;
+    --line:#CBE4E4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:#FFFFFF;
+    line-height:1.6;
+    font-size:16px;
+  }
+  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;line-height:1.2}
+
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--deep);color:#fff;padding:72px 0 64px}
+  .eyebrow{
+    font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ice);margin-bottom:22px;
+  }
+  .hero h1{font-size:clamp(34px,5.5vw,54px);font-weight:700;max-width:14em}
+  .hero h1 .accent{color:var(--mint)}
+
+  /* ---------- FUNNEL SPINE ---------- */
+  .funnel{padding:72px 0 48px;position:relative}
+  .spine{position:relative;padding-left:44px}
+  .spine::before{
+    content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--teal),var(--mint));border-radius:2px;
+  }
+  .stage{margin-bottom:64px;position:relative}
+  .stage::before{
+    content:"";position:absolute;left:-44px;top:4px;width:24px;height:24px;border-radius:50%;
+    background:#fff;border:3px solid var(--teal);
+  }
+  .stage-label{
+    font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:8px;
+  }
+  .stage h2{font-size:clamp(24px,3.4vw,32px);font-weight:700;margin-bottom:26px}
+
+  /* ---------- TOOL CARDS ---------- */
+  .cards{display:grid;grid-template-columns:1fr;gap:24px}
+  .card{
+    border-radius:14px;padding:28px 26px;
+    background:var(--tint);
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .card.dark{background:var(--deep);color:#fff}
+  .card .num{
+    font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);
+  }
+  .card.dark .num{color:var(--mint)}
+  .card h3{font-size:21px;font-weight:700}
+  .card .tag{font-size:14px;font-weight:600;color:var(--teal)}
+  .card.dark .tag{color:var(--mint)}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:var(--muted)}
+  .card.dark ul{color:#C9DEDF}
+  .card ul li{padding-left:20px;position:relative}
+  .card ul li::before{
+    content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;
+    background:var(--teal);
+  }
+  .card.dark ul li::before{background:var(--mint)}
+  .card .value{
+    margin-top:auto;padding-top:6px;font-size:13.5px;font-style:italic;color:var(--teal);
+  }
+  .card.dark .value{color:var(--ice)}
+  .card .tech{
+    border-top:1px solid var(--line);padding-top:12px;font-size:12.5px;color:var(--muted);
+  }
+  .card .tech b{color:var(--ink);font-weight:600}
+  .card.dark .tech{border-top-color:rgba(159,232,216,.25);color:#A8C7C8}
+  .card.dark .tech b{color:var(--ice)}
+
+
+  /* ---------- REVEAL ANIMATION ---------- */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.show{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width:680px){
+    .hero{padding:64px 0 56px}
+
+    .spine{padding-left:34px}
+    .stage::before{left:-34px;width:20px;height:20px}
+    .spine::before{left:9px}
+    .stage{margin-bottom:48px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AI Automation in Recruitment</p>
+    <h1>7 tools covering<br>the <span class="accent">entire hiring funnel</span></h1>
+  </div>
+</header>
+
+<!-- ============ FUNNEL ============ -->
+<main class="funnel">
+  <div class="wrap">
+    <div class="spine">
+
+      <!-- ===== STAGE 1 ===== -->
+      <section class="stage reveal" id="stage-1">
+        <p class="stage-label">Stage 1</p>
+        <h2>Intake &amp; Screening</h2>
+        <div class="cards">
+          <article class="card">
+            <p class="num">Tool No. 1</p>
+            <h3>Intake Brief Assistant</h3>
+            <p class="tag">A high-quality intake meeting from the very first conversation</p>
+            <ul>
+              <li>Assessment of how realistic the requirements and conditions are against the market</li>
+              <li>Contradictions and weak spots in the profile</li>
+              <li>Questions and recommendations for the conversation with the hiring manager</li>
+              <li>Sourcing strategy: which companies employ such candidates, channels, how to sell them the role</li>
+            </ul>
+            <p class="value">No profile rework — the search starts in the right direction immediately.</p>
+            <p class="tech"><b>How it's built:</b> a prompt instruction + a structured intake template. Runs in Claude or ChatGPT, no code.</p>
+          </article>
+          <article class="card dark">
+            <p class="num">Tool No. 2</p>
+            <h3>Resume Analyzer</h3>
+            <p class="tag">Screening the incoming flow in minutes, not hours</p>
+            <ul>
+              <li>Every resume is matched against the final job description</li>
+              <li>Sorted into: invite to interview / clarify experience / not a match</li>
+              <li>For each candidate — the reasoning: what matched, what to verify</li>
+            </ul>
+            <p class="value">Strong candidates don't get lost in the flow. The decision always stays with the recruiter.</p>
+            <p class="tech"><b>How it's built:</b> an AI project with the job description in its knowledge base + resume uploads (PDF) + a prompt with evaluation criteria.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== STAGE 2 ===== -->
+      <section class="stage reveal" id="stage-2">
+        <p class="stage-label">Stage 2</p>
+        <h2>Interview</h2>
+        <div class="cards">
+          <article class="card">
+            <p class="num">Tool No. 3</p>
+            <h3>Interview Prep Assistant</h3>
+            <p class="tag">A personalized conversation plan for every candidate</p>
+            <ul>
+              <li>Questions targeting the specific candidate's experience and skills — based on the resume analysis</li>
+              <li>Areas to probe: gaps, career switches, inconsistencies</li>
+            </ul>
+            <p class="value">A structured interview without hours of preparation. Every candidate is assessed against the same criteria.</p>
+            <p class="tech"><b>How it's built:</b> a prompt that takes Tool No. 2's findings and the job profile as input. Same AI project, no code.</p>
+          </article>
+          <article class="card dark">
+            <p class="num">Tool No. 4</p>
+            <h3>Transcript Analyzer</h3>
+            <p class="tag">A conclusion based on the whole conversation, not the interviewer's memory</p>
+            <ul>
+              <li>Analysis during the interview itself: clarifying questions to ask the candidate at the end of that same meeting</li>
+              <li>A conclusion: strengths, risks, fit against the profile</li>
+            </ul>
+            <p class="value">Gaps are closed on the spot, no follow-up calls. The assessment relies on facts, not impressions.</p>
+            <p class="tech"><b>How it's built:</b> a call transcription service (Zoom, Meet, tl;dv, etc.) + an analysis prompt. Recording — with the candidate's consent.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== STAGE 3 ===== -->
+      <section class="stage reveal" id="stage-3">
+        <p class="stage-label">Stage 3</p>
+        <h2>After the Interview</h2>
+        <div class="cards">
+          <article class="card">
+            <p class="num">Tool No. 5</p>
+            <h3>Feedback &amp; Summary Writer</h3>
+            <p class="tag">Three texts after every interview — in a couple of minutes</p>
+            <ul>
+              <li>For the candidate — a respectful rejection or an invitation to the next stage</li>
+              <li>For the hiring manager — conclusions and a recommendation</li>
+              <li>For the ATS — a structured record in the required format</li>
+            </ul>
+            <p class="value">Fast answers for candidates, clear feedback for hiring managers, complete data in the ATS.</p>
+            <p class="tech"><b>How it's built:</b> a prompt + email templates + a record format for the specific ATS. Takes Tool No. 4's conclusion as input.</p>
+          </article>
+          <article class="card dark">
+            <p class="num">Tool No. 6</p>
+            <h3>Recruiter Performance Analyzer</h3>
+            <p class="tag">A funnel retrospective: what to change in the process</p>
+            <ul>
+              <li>Analysis of accumulated transcripts + outcomes: recruiter rejection / candidate withdrawal / offer declined</li>
+              <li>Where and why candidates are being lost</li>
+              <li>Specific recommendations — what to change</li>
+            </ul>
+            <p class="value">Growth based on your own data, not generic advice.</p>
+            <p class="tech"><b>How it's built:</b> a table of candidate outcomes + a transcript archive + an analytical prompt. Requires 2–3 months of data collection.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== STAGE 4 ===== -->
+      <section class="stage reveal" id="stage-4">
+        <p class="stage-label">Stage 4</p>
+        <h2>Trainer for Recruiters and Hiring Managers</h2>
+        <div class="cards">
+          <article class="card dark">
+            <p class="num">Tool No. 7</p>
+            <h3>Interview Trainer</h3>
+            <p class="tag">AI plays the candidate — recruiters and hiring managers train their assessment skills</p>
+            <ul>
+              <li>For recruiters — assessing soft skills and values, hard skills to a lesser extent</li>
+              <li>For hiring managers — practicing hard skills assessment</li>
+              <li>Different scenarios: a strong candidate, a borderline one, a difficult one</li>
+            </ul>
+            <p class="value">Interview skills grow with zero risk to real candidates. Especially valuable for hiring managers who interview rarely.</p>
+            <p class="tech"><b>How it's built:</b> a role-play prompt with an "AI candidate" persona and backstory + an assessment checklist. Works in text or voice mode.</p>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  // Smooth section reveal on scroll (disabled when prefers-reduced-motion is set)
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('show'));
+  }
+</script>
+
+</body>
+</html>

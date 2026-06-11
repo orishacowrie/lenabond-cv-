@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИИ-автоматизация в рекрутменте — 7 инструментов для всей воронки найма</title>
+<meta name="description" content="7 ИИ-инструментов для воронки найма: от снятия заявки до развития команды. Без программирования и закупки платформ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep:#06363B;
+    --teal:#028090;
+    --mint:#02C39A;
+    --tint:#E9F5F5;
+    --ink:#1E293B;
+    --muted:#5B6B7B;
+    --ice:#9FE8D8;
+    --line:#CBE4E4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:#FFFFFF;
+    line-height:1.6;
+    font-size:16px;
+  }
+  h1,h2,h3{font-family:'Playfair Display',Georgia,serif;line-height:1.2}
+
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--deep);color:#fff;padding:72px 0 64px}
+  .eyebrow{
+    font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ice);margin-bottom:22px;
+  }
+  .hero h1{font-size:clamp(34px,5.5vw,54px);font-weight:700;max-width:14em}
+  .hero h1 .accent{color:var(--mint)}
+
+  /* ---------- FUNNEL SPINE ---------- */
+  .funnel{padding:72px 0 48px;position:relative}
+  .spine{position:relative;padding-left:44px}
+  .spine::before{
+    content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--teal),var(--mint));border-radius:2px;
+  }
+  .stage{margin-bottom:64px;position:relative}
+  .stage::before{
+    content:"";position:absolute;left:-44px;top:4px;width:24px;height:24px;border-radius:50%;
+    background:#fff;border:3px solid var(--teal);
+  }
+  .stage-label{
+    font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:8px;
+  }
+  .stage h2{font-size:clamp(24px,3.4vw,32px);font-weight:700;margin-bottom:26px}
+
+  /* ---------- TOOL CARDS ---------- */
+  .cards{display:grid;grid-template-columns:1fr;gap:24px}
+  .card{
+    border-radius:14px;padding:28px 26px;
+    background:var(--tint);
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .card.dark{background:var(--deep);color:#fff}
+  .card .num{
+    font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);
+  }
+  .card.dark .num{color:var(--mint)}
+  .card h3{font-size:21px;font-weight:700}
+  .card .tag{font-size:14px;font-weight:600;color:var(--teal)}
+  .card.dark .tag{color:var(--mint)}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:var(--muted)}
+  .card.dark ul{color:#C9DEDF}
+  .card ul li{padding-left:20px;position:relative}
+  .card ul li::before{
+    content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;
+    background:var(--teal);
+  }
+  .card.dark ul li::before{background:var(--mint)}
+  .card .value{
+    margin-top:auto;padding-top:6px;font-size:13.5px;font-style:italic;color:var(--teal);
+  }
+  .card.dark .value{color:var(--ice)}
+  .card .tech{
+    border-top:1px solid var(--line);padding-top:12px;font-size:12.5px;color:var(--muted);
+  }
+  .card .tech b{color:var(--ink);font-weight:600}
+  .card.dark .tech{border-top-color:rgba(159,232,216,.25);color:#A8C7C8}
+  .card.dark .tech b{color:var(--ice)}
+
+
+  /* ---------- REVEAL ANIMATION ---------- */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.show{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width:680px){
+    .hero{padding:64px 0 56px}
+
+    .spine{padding-left:34px}
+    .stage::before{left:-34px;width:20px;height:20px}
+    .spine::before{left:9px}
+    .stage{margin-bottom:48px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">ИИ-автоматизация в рекрутменте</p>
+    <h1>7 инструментов<br>для <span class="accent">всей воронки</span> найма</h1>
+  </div>
+</header>
+
+<!-- ============ FUNNEL ============ -->
+<main class="funnel">
+  <div class="wrap">
+    <div class="spine">
+
+      <!-- ===== STAGE 1 ===== -->
+      <section class="stage reveal" id="stage-1">
+        <p class="stage-label">Этап 1</p>
+        <h2>Заявка и скрининг</h2>
+        <div class="cards">
+          <article class="card">
+            <p class="num">Инструмент № 1</p>
+            <h3>Подсказчик для снятия заявки</h3>
+            <p class="tag">Качественное снятие заявки с первой встречи</p>
+            <ul>
+              <li>Оценка адекватности требований и условий относительно рынка</li>
+              <li>Противоречия и слабые места профиля</li>
+              <li>Вопросы и рекомендации для разговора с нанимающим</li>
+              <li>Стратегия поиска: где работают такие кандидаты, каналы, как продавать вакансию</li>
+            </ul>
+            <p class="value">Профиль без переделок — поиск стартует сразу в верном направлении.</p>
+            <p class="tech"><b>Реализация:</b> промпт-инструкция + структурированный шаблон ввода заявки. Работает в Claude или ChatGPT, без кода.</p>
+          </article>
+          <article class="card dark">
+            <p class="num">Инструмент № 2</p>
+            <h3>Анализатор резюме</h3>
+            <p class="tag">Разбор входящего потока за минуты, а не часы</p>
+            <ul>
+              <li>Каждое резюме сопоставляется с финальным описанием вакансии</li>
+              <li>Сортировка: на интервью / уточнить опыт / не соответствует</li>
+              <li>По каждому кандидату — обоснование: что совпало, что проверить</li>
+            </ul>
+            <p class="value">Сильные кандидаты не теряются в потоке. Решение всегда за рекрутером.</p>
+            <p class="tech"><b>Реализация:</b> ИИ-проект с описанием вакансии в базе знаний + загрузка резюме (PDF) + промпт с критериями оценки.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== STAGE 2 ===== -->
+      <section class="stage reveal" id="stage-2">
+        <p class="stage-label">Этап 2</p>
+        <h2>Интервью</h2>
+        <div class="cards">
+          <article class="card">
+            <p class="num">Инструмент № 3</p>
+            <h3>Подготовщик к интервью</h3>
+            <p class="tag">Персональный план разговора под каждого кандидата</p>
+            <ul>
+              <li>Вопросы по опыту и навыкам конкретного кандидата — на основе анализа резюме</li>
+              <li>Зоны для проверки: пробелы, смены сфер, нестыковки</li>
+            </ul>
+            <p class="value">Структурированное интервью без часов подготовки. Все кандидаты оцениваются по единым критериям.</p>
+            <p class="tech"><b>Реализация:</b> промпт, который берёт на вход выводы инструмента № 2 и профиль вакансии. Тот же ИИ-проект, без кода.</p>
+          </article>
+          <article class="card dark">
+            <p class="num">Инструмент № 4</p>
+            <h3>Анализатор транскрипта</h3>
+            <p class="tag">Заключение на основе всего разговора, а не памяти интервьюера</p>
+            <ul>
+              <li>Анализ прямо по ходу интервью: уточняющие вопросы — кандидату в конце той же встречи</li>
+              <li>Заключение: сильные стороны, риски, соответствие профилю</li>
+            </ul>
+            <p class="value">Пробелы закрываются сразу, без повторных созвонов. Оценка — по фактам, а не впечатлению.</p>
+            <p class="tech"><b>Реализация:</b> сервис транскрибации звонков (Zoom, Meet, tl;dv и т.п.) + промпт для анализа. Запись — с согласия кандидата.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== STAGE 3 ===== -->
+      <section class="stage reveal" id="stage-3">
+        <p class="stage-label">Этап 3</p>
+        <h2>После интервью</h2>
+        <div class="cards">
+          <article class="card">
+            <p class="num">Инструмент № 5</p>
+            <h3>Подготовщик заключений</h3>
+            <p class="tag">Три текста после интервью — за пару минут</p>
+            <ul>
+              <li>Кандидату — корректный отказ или приглашение на следующий этап</li>
+              <li>Нанимающему менеджеру — выводы и рекомендация</li>
+              <li>В ATS — структурированная запись в нужном формате</li>
+            </ul>
+            <p class="value">Быстрые ответы кандидатам, внятный фидбэк нанимающим, полные данные в ATS.</p>
+            <p class="tech"><b>Реализация:</b> промпт + шаблоны писем и формат записи под конкретную ATS. На входе — заключение из инструмента № 4.</p>
+          </article>
+          <article class="card dark">
+            <p class="num">Инструмент № 6</p>
+            <h3>Анализатор работы рекрутера</h3>
+            <p class="tag">Ретроспектива воронки: что менять в процессе</p>
+            <ul>
+              <li>Анализ накопленных транскриптов + исходов: отказ рекрутера / отказ кандидата / отказ от оффера</li>
+              <li>Где и почему теряются кандидаты</li>
+              <li>Конкретные рекомендации — что изменить в работе</li>
+            </ul>
+            <p class="value">Развитие на собственных данных, а не на общих советах.</p>
+            <p class="tech"><b>Реализация:</b> таблица с исходами по кандидатам + архив транскриптов + аналитический промпт. Требует 2–3 месяцев накопления данных.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== STAGE 4 ===== -->
+      <section class="stage reveal" id="stage-4">
+        <p class="stage-label">Этап 4</p>
+        <h2>Тренажёр для рекрутеров и нанимающих менеджеров</h2>
+        <div class="cards">
+          <article class="card dark">
+            <p class="num">Инструмент № 7</p>
+            <h3>Тренажёр интервью</h3>
+            <p class="tag">ИИ играет кандидата — рекрутер и нанимающий тренируют оценку</p>
+            <ul>
+              <li>Для рекрутеров — оценка софт-скилов и ценностей, в меньшей степени — хардов</li>
+              <li>Для нанимающих менеджеров — тренировка оценки хард-скилов</li>
+              <li>Разные сценарии: сильный кандидат, спорный, конфликтный</li>
+            </ul>
+            <p class="value">Навык интервью растёт без риска для реальных кандидатов. Особенно ценно для нанимающих, которые интервьюируют редко.</p>
+            <p class="tech"><b>Реализация:</b> ролевой промпт-сценарий «ИИ-кандидата» с легендой и характером + чек-лист оценки. Можно в текстовом или голосовом режиме.</p>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  // Плавное появление секций при скролле (отключается при prefers-reduced-motion)
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('show'));
+  }
+</script>
+
+</body>
+</html>
