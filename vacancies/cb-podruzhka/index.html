@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Руководитель функции C&amp;B — «Подружка»</title>
+<meta name="description" content="Федеральная сеть магазинов косметики и парфюмерии «Подружка» ищет руководителя функции Compensation &amp; Benefits. Москва, гибрид, 6 человек в подчинении.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap&subset=cyrillic,latin" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1418;
+    --paper:#FBF7F8;
+    --rose:#E8447E;
+    --rose-pale:#F7DCE6;
+    --graphite:#6B6068;
+    --rule:#E4D9DE;
+
+    --display:'Unbounded', system-ui, sans-serif;
+    --body:'Onest', system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--rose-pale);}
+
+  .wrap{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 28px 120px;
+  }
+
+  /* ---------- data rail: label left, content right ---------- */
+  .row{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:0 44px;
+    padding:38px 0;
+    border-top:1px solid var(--rule);
+  }
+  .row-label{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--graphite);
+    padding-top:5px;
+  }
+  .row-label span{
+    display:block;
+    color:var(--rose);
+    margin-top:6px;
+    text-transform:none;
+    letter-spacing:0;
+    font-size:13px;
+  }
+  .row-body > :first-child{margin-top:0;}
+  .row-body > :last-child{margin-bottom:0;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 52px;}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--rose);
+    margin:0 0 26px;
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(2.1rem, 6.2vw, 4rem);
+    line-height:1.06;
+    letter-spacing:-.02em;
+    margin:0 0 34px;
+    max-width:16ch;
+  }
+  .hero h1 em{font-style:normal;color:var(--rose);}
+  .company{
+    font-size:1.12rem;
+    max-width:46ch;
+    margin:0 0 40px;
+    color:var(--graphite);
+  }
+  .company b{color:var(--ink);font-weight:600;}
+
+  .spec{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    border-top:2px solid var(--ink);
+    border-bottom:1px solid var(--rule);
+  }
+  .spec div{
+    flex:1 1 160px;
+    padding:16px 20px 18px 0;
+  }
+  .spec dt{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--graphite);
+    margin-bottom:5px;
+  }
+  .spec dd{
+    margin:0;
+    font-weight:600;
+    font-size:.98rem;
+    line-height:1.35;
+  }
+
+  /* ---------- typography ---------- */
+  h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:1.28rem;
+    letter-spacing:-.01em;
+    line-height:1.25;
+    margin:0 0 18px;
+  }
+  h3{
+    font-family:var(--body);
+    font-weight:600;
+    font-size:1.02rem;
+    margin:0 0 7px;
+  }
+  p{margin:0 0 16px;}
+  .lead{font-size:1.12rem;}
+  .muted{color:var(--graphite);}
+
+  .aside{
+    border-left:2px solid var(--rose);
+    padding:2px 0 2px 18px;
+    margin-top:30px;
+    font-size:.95rem;
+    color:var(--graphite);
+  }
+
+  /* ---------- scope blocks ---------- */
+  .scope{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:34px 44px;
+    margin-top:6px;
+  }
+  .scope article{
+    border-top:1px solid var(--rule);
+    padding-top:16px;
+  }
+  .scope .tag{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--rose);
+    display:block;
+    margin-bottom:12px;
+  }
+  .scope p{
+    margin:0;
+    font-size:.95rem;
+    color:var(--graphite);
+  }
+
+  /* ---------- steps: реальная последовательность, поэтому нумерация ---------- */
+  .steps{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .steps li{
+    display:grid;
+    grid-template-columns:46px 1fr;
+    gap:0 14px;
+    padding:15px 0;
+    border-top:1px solid var(--rule);
+  }
+  .steps li:first-child{border-top:none;padding-top:0;}
+  .steps .n{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:500;
+    color:var(--rose);
+    padding-top:4px;
+  }
+  .steps h3{margin:0 0 4px;}
+  .steps p{margin:0;font-size:.93rem;color:var(--graphite);}
+
+  /* ---------- lists ---------- */
+  ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  ul li{
+    position:relative;
+    padding-left:26px;
+    margin-bottom:13px;
+  }
+  ul li::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:.68em;
+    width:11px;
+    height:1px;
+    background:var(--rose);
+  }
+  ul li:last-child{margin-bottom:0;}
+
+  footer{
+    border-top:1px solid var(--rule);
+    margin-top:56px;
+    padding-top:24px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--graphite);
+  }
+
+  /* ---------- motion ---------- */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  a{color:var(--ink);}
+  a:focus-visible,:focus-visible{outline:2px solid var(--rose);outline-offset:3px;}
+
+  @media (max-width:720px){
+    body{font-size:16px;}
+    .wrap{padding:0 20px 80px;}
+    .hero{padding:48px 0 36px;}
+    .row{
+      grid-template-columns:1fr;
+      gap:14px;
+      padding:32px 0;
+    }
+    .row-label{padding-top:0;}
+    .row-label span{display:inline;margin-left:8px;}
+    .scope{gap:26px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Вакансия · Москва</p>
+    <h1>Руководитель функции <em>C&amp;B</em></h1>
+    <p class="company"><b>«Подружка»</b> — федеральная сеть магазинов косметики и парфюмерии</p>
+
+    <dl class="spec">
+      <div><dt>Компания</dt><dd>4 500 сотрудников</dd></div>
+      <div><dt>Центральный офис</dt><dd>500 человек</dd></div>
+      <div><dt>В подчинении</dt><dd>6 человек</dd></div>
+      <div><dt>Формат</dt><dd>Гибрид после ИС</dd></div>
+      <div><dt>Доход</dt><dd>от 600 тыс ₽ гросс + бонус</dd></div>
+      <div><dt>Офис</dt><dd>БЦ «Омега Плаза», м. Автозаводская</dd></div>
+    </dl>
+  </header>
+
+  <section class="row reveal">
+    <div class="row-label">О компании</div>
+    <div class="row-body">
+      <p>«Подружка» — федеральная дрогери-сеть косметики, парфюмерии и товаров для дома. Работает с 2005 года: сегодня это более 250 магазинов в России, а также в Казахстане и Беларуси, интернет-магазин и более 4 млн лояльных покупательниц в год.</p>
+      <p>В ассортименте около 22 000 позиций, включая собственные марки — Pink Up, DECO., LP Care, Lady Pink, Sun Look, Miss Pinky и другие. С 2022 года сеть входит в группу «Алькор и Ко» («Л'Этуаль»), крупнейшего игрока бьюти-ритейла в России.</p>
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="row-label">Зачем эта роль</div>
+    <div class="row-body">
+      <h2>Собрать вознаграждение в одну управляемую систему</h2>
+      <p class="lead">Сеть выросла быстро — и вместе с ней выросла сложность системы вознаграждения. Сейчас мотивационные программы, KPI, бюджет ФОТ и аналитика живут в разной логике для розницы и для офиса.</p>
+      <p>Компании нужен человек, который соберёт это в единый контур и сделает так, чтобы каждый рубль ФОТ работал на результат. Это роль не про поддержание процесса, а про его пересборку — с полномочиями, бюджетом и командой.</p>
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="row-label">Что предстоит делать<span>7 зон ответственности</span></div>
+    <div class="row-body">
+      <div class="scope">
+        <article>
+          <span class="tag">250+ магазинов</span>
+          <h3>Мотивация розницы</h3>
+          <p>Развивать систему премирования сети: KPI, расчёт премий, конкурсы, поддержка перехода на модель индивидуальных продаж.</p>
+        </article>
+        <article>
+          <span class="tag">500 человек</span>
+          <h3>Мотивация центрального офиса</h3>
+          <p>Пересмотреть и каскадировать KPI офисных функций, описать правила, выстроить контроль и обработку.</p>
+        </article>
+        <article>
+          <span class="tag">весь ФОТ</span>
+          <h3>Бюджет расходов на персонал</h3>
+          <p>Бюджетирование и прогнозирование ФОТ, контроль исполнения, перевод ведения бюджета в 1С.</p>
+        </article>
+        <article>
+          <span class="tag">ДМС и программы</span>
+          <h3>Компенсации и льготы</h3>
+          <p>Управление системой льгот компании: ДМС и другие программы поддержки сотрудников.</p>
+        </article>
+        <article>
+          <span class="tag">команда 3</span>
+          <h3>Расчёт заработной платы</h3>
+          <p>Руководство отделом расчёта ЗП: полный цикл расчёта и отчётность в государственные органы. Сильный и во многом автономный руководитель отдела уже в команде.</p>
+        </article>
+        <article>
+          <span class="tag">штатное расписание</span>
+          <h3>Производительность труда</h3>
+          <p>Работа со штатными структурами розницы и офиса, нормирование, оценка эффективности мотивационных программ.</p>
+        </article>
+        <article>
+          <span class="tag">данные</span>
+          <h3>HR-аналитика</h3>
+          <p>Базовая аналитика есть — её нужно развить до уровня, на котором решения по вознаграждению принимаются на данных.</p>
+        </article>
+      </div>
+
+      <p class="aside">Важный нюанс: вопрос о том, перейдёт ли функция организационного дизайна и работы со структурами полностью в зону C&amp;B, сейчас обсуждается. Компания готова определить это вместе с тем, кто придёт на роль.</p>
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="row-label">Команда<span>6 в прямом подчинении</span></div>
+    <div class="row-body">
+      <p>В прямом подчинении шесть человек: отдел расчёта заработной платы (3 человека) и группа C&amp;B (3 специалиста, один из них отвечает за сводную отчётность).</p>
+      <p class="muted">Компания — 4 500 сотрудников, из них около 500 в центральном офисе.</p>
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="row-label">Требования к кандидату</div>
+    <div class="row-body">
+      <ul>
+        <li>Высшее профильное образование</li>
+        <li>Опыт в C&amp;B от 5 лет, из них от 3 лет — руководство функцией</li>
+        <li>Опыт работы с массовым персоналом; ритейл — преимущество</li>
+        <li>Успешные кейсы разработки и внедрения систем мотивации — с нуля или в логике серьёзной перестройки</li>
+        <li>Сильная аналитика и уверенная работа с большими массивами данных</li>
+        <li>Умение договариваться на всех уровнях — от продавца в магазине до топ-менеджмента</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="row-label">Условия</div>
+    <div class="row-body">
+      <ul>
+        <li>Оклад от 600 000 ₽ гросс для кандидатов с релевантным опытом, плюс квартальный бонус по KPI</li>
+        <li>Официальное трудоустройство и социальный пакет</li>
+        <li>График 9:00–18:00, гибридный формат после испытательного срока</li>
+        <li>Современный офис в БЦ «Омега Плаза», 5 минут от метро «Автозаводская»</li>
+        <li>Скидки на продукцию сети</li>
+      </ul>
+      <!-- Если решишь показывать вилку — добавь сюда ещё один <li> -->
+    </div>
+  </section>
+
+  <section class="row reveal">
+    <div class="row-label">Этапы отбора<span>4 интервью</span></div>
+    <div class="row-body">
+      <ol class="steps">
+        <li>
+          <span class="n">01</span>
+          <div>
+            <h3>Интервью с рекрутером</h3>
+            <p>Разговор о вашем опыте, контексте задачи и ожиданиях по доходу. Около 30 минут.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <div>
+            <h3>Интервью с руководителем подбора</h3>
+            <p>Более детальный разбор профессионального опыта.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <div>
+            <h3>Интервью с HR-директором</h3>
+            <p>Приоритеты функции, ожидания от роли, взгляд на первый год.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">04</span>
+          <div>
+            <h3>Интервью с генеральным директором</h3>
+            <p>Финальная встреча.</p>
+          </div>
+        </li>
+      </ol>
+
+      <p class="aside">В процессе отбора используется вербально-числовой тест.</p>
+    </div>
+  </section>
+
+  <footer>«Подружка» · Руководитель функции C&amp;B · Москва</footer>
+
+</div>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.reveal');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
