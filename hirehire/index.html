@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sourcing Strategy — Senior Product Designer @ Xsolla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF; --ink:#111114; --muted:#5B5E6B;
+  --accent:#7C6FF4; --accent-soft:#F1EFFE;
+  --line:#E8E8EE; --card:#FFFFFF; --code-bg:#131318; --code-ink:#DDDEE7;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:400 19px/1.7 "Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* ---------- шапка ---------- */
+.top{border-bottom:1px solid var(--line);padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.02em}
+.logo em{font-style:normal;color:var(--accent)}
+.top .crumb{color:var(--muted);font-size:15.5px}
+.lang{margin-left:auto;display:flex;gap:4px;border:1px solid var(--line);border-radius:8px;padding:3px}
+.lang button{font:500 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;
+  padding:8px 12px;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer}
+.lang button:hover{background:var(--accent-soft);color:var(--accent)}
+.lang button.on{background:var(--accent);color:#fff}
+
+/* ---------- каркас ---------- */
+.wrap{max-width:1060px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:230px 1fr;gap:48px}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;gap:0}}
+
+nav.toc{position:sticky;top:24px;align-self:start;padding:28px 0;font-size:15.5px}
+nav.toc .t{font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+nav.toc a{display:block;color:var(--ink);padding:6px 10px;border-left:2px solid transparent;border-radius:0 6px 6px 0}
+nav.toc a:hover{background:var(--accent-soft);text-decoration:none}
+nav.toc a.on{border-left-color:var(--accent);color:var(--accent);font-weight:600;background:var(--accent-soft)}
+@media(max-width:900px){nav.toc{position:static;border-bottom:1px solid var(--line)}}
+
+main{padding:40px 0 80px;max-width:680px}
+.eyebrow{font:500 12px/1 "JetBrains Mono",monospace;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+h1{font-weight:800;font-size:clamp(30px,4.4vw,46px);line-height:1.12;letter-spacing:-.025em;margin:10px 0 14px}
+.sub{color:var(--muted);font-size:16.5px}
+.thesis{margin:34px 0 0;padding:26px 28px;background:var(--accent-soft);border-radius:16px;
+  font-size:20px;line-height:1.5;font-weight:600;letter-spacing:-.01em}
+.thesis .l{display:block;font:500 11px/1 "JetBrains Mono",monospace;letter-spacing:.1em;color:var(--accent);text-transform:uppercase;margin-bottom:10px}
+
+section{margin-top:72px;scroll-margin-top:24px}
+h2{font-weight:800;font-size:27px;letter-spacing:-.02em;margin:0 0 6px}
+h2 .n{font:500 13px/1 "JetBrains Mono",monospace;color:var(--accent);margin-right:10px;vertical-align:3px}
+h3{font-weight:600;font-size:20px;margin:34px 0 10px}
+p{margin:12px 0}
+ul,ol{margin:12px 0;padding-left:24px}
+li{margin:10px 0}
+.muted{color:var(--muted)}
+
+/* ---------- карточки пулов ---------- */
+.tier{border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:18px 0;
+  border-top:3px solid var(--accent);box-shadow:0 2px 8px rgba(17,17,20,.05)}
+.tier.t2{border-top-color:#B9B1F9}
+.tier.t3{border-top-color:#C9CBD6}
+.tier .tag{font:500 11px/1 "JetBrains Mono",monospace;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
+.tier.t2 .tag{color:#8F86E8}
+.tier.t3 .tag{color:var(--muted)}
+.tier h3{margin:8px 0 6px;font-size:19px}
+.tier p:first-of-type{margin-top:2px}
+.co{display:flex;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:16.5px}
+.co b{min-width:130px;font-weight:600}
+.co span{color:var(--muted)}
+@media(max-width:520px){.co{flex-direction:column;gap:2px}.co b{min-width:0}}
+.wave{border:1.5px dashed var(--accent);border-radius:14px;padding:22px 24px;margin:18px 0;background:#FBFAFF}
+.wave .tag{font:500 11px/1 "JetBrains Mono",monospace;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
+.wave h3{margin:8px 0 6px;font-size:19px}
+
+/* ---------- код и сообщения ---------- */
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 18px;overflow-x:auto;
+  font:400 15px/1.6 "JetBrains Mono",monospace;margin:16px 0}
+code{font-family:"JetBrains Mono",monospace;font-size:.92em;background:#F2F3F6;border-radius:5px;padding:2px 5px}
+pre code{background:none;padding:0;font-size:inherit}
+.msg{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;
+  padding:6px 24px;margin:18px 0;background:#FCFCFE}
+.msg p{font-size:17.5px}
+.after{font-size:16.5px;color:var(--muted);margin:10px 0 0}
+
+/* ---------- план недели ---------- */
+.day{border-top:1px solid var(--line);padding:14px 0;display:flex;gap:16px}
+.day b{min-width:110px;font-weight:600}
+@media(max-width:520px){.day{flex-direction:column;gap:2px}.day b{min-width:0}}
+
+.note{margin-top:56px;padding:16px 20px;border:1px solid var(--line);border-radius:12px;font-size:14px;color:var(--muted)}
+[hidden]{display:none !important}
+@media print{nav.toc,.top{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">hire<em>hire</em> <span style="font-weight:400;color:var(--muted)">/</span></div>
+  <div class="crumb" data-lang="ru">Sourcing challenge · Recruiting Partner</div>
+  <div class="crumb" data-lang="en" hidden>Sourcing challenge · Recruiting Partner</div>
+  <div class="lang">
+    <button type="button" data-set="ru" class="on">RU</button>
+    <button type="button" data-set="en">EN</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============================ ОГЛАВЛЕНИЕ RU ============================ -->
+<nav class="toc" data-lang="ru" aria-label="Оглавление">
+  <div class="t">Оглавление</div>
+  <a href="#s1">1 · Кого ищем — и кого нет</a>
+  <a href="#s2">2 · Карта рынка</a>
+  <a href="#s3">3 · Как ищу и как отбираю</a>
+  <a href="#s4">4 · Сеть и каналы</a>
+  <a href="#s5">5 · Аутрич</a>
+  <a href="#s6">6 · Неделя 1</a>
+  <a href="#s7">7 · Метрики стратегии</a>
+  <a href="#s8">8 · Как я использую AI</a>
+  <a href="#s9">9 · Приложение 1: профили</a>
+  <a href="#s10">10 · Приложение 2: сообщение</a>
+</nav>
+
+<!-- ============================ ОГЛАВЛЕНИЕ EN ============================ -->
+<nav class="toc" data-lang="en" aria-label="Contents" hidden>
+  <div class="t">Contents</div>
+  <a href="#s1">1 · Who we're looking for</a>
+  <a href="#s2">2 · Market map</a>
+  <a href="#s3">3 · How I search and screen</a>
+  <a href="#s4">4 · Network and channels</a>
+  <a href="#s5">5 · Outreach</a>
+  <a href="#s6">6 · Week 1</a>
+  <a href="#s7">7 · How I'll know it works</a>
+  <a href="#s8">8 · How I use AI</a>
+  <a href="#s9">9 · Appendix 1: profiles</a>
+  <a href="#s10">10 · Appendix 2: message</a>
+</nav>
+
+<!-- ============================ ТЕКСТ RU ============================ -->
+<main data-lang="ru">
+  <div class="eyebrow">Sourcing strategy</div>
+  <h1>Senior Product Designer <span style="color:var(--accent)">@ Xsolla</span></h1>
+  <div class="sub">Lena Bondareva · Recruiting Partner challenge для hirehire · август 2026</div>
+
+  <div class="thesis">
+    <span class="l">Главная ставка</span>
+    Цель — не самый большой пул кандидатов, а самый маленький релевантный рынок,
+    который можно полностью пройти за неделю.
+  </div>
+
+  <section id="s1">
+    <h2><span class="n">01</span>Кого ищем — и кого сознательно нет</h2>
+
+    <h3>Суть роли</h3>
+    <p>Xsolla ищет дизайнера, который понимает поведение пользователя вокруг трат, вовлечения и возврата — в игровом контексте. Опыт веб-магазинов для игр — сильнейший сигнал соответствия, но не обязательное условие: вакансия говорит о психологии потребителя, игровых механиках и продуктовой стратегии, а магазины, подписки и программы лояльности называет отдельным плюсом.</p>
+    <p>Продукт — веб-магазины: сайты, через которые студии продают игрокам напрямую, в обход 30% комиссии Apple и Google. Задача такого магазина — дать игроку причину прийти на сайт и возвращаться: бонусы, программы лояльности, ежедневные награды. Поэтому в вакансии столько про психологию игроков и конверсию.</p>
+    <p>Второй пласт: Xsolla переводит свой Shop Builder от магазинов «под ключ» к конструктору, которым студии пользуются сами. Дизайнер будет проектировать не один магазин, а блоки, из которых сотни студий соберут свои.</p>
+    <p><strong>Главная ставка стратегии:</strong> цель — не самый большой пул кандидатов, а самый маленький релевантный рынок, который можно полностью пройти за неделю. Это ответ на вопрос «на что я ставлю в первую очередь» — и причина большинства осознанных отказов ниже.</p>
+
+    <h3>Почему эту роль важно закрывать быстро</h3>
+    <p>Данные из отчёта самой Xsolla (июль 2026): мобильный игровой рынок в 2025 вырос всего на 0,2%, при этом выручка от прямых продаж игрокам в США выросла на 26%, а у топ-100 игр — на 38%. Крупные издатели наращивают долю прямых продаж: Playtika вышла на $814,5M и целится в 40%, Huuuge Games уже перешагнула 40%. Направление растёт, студии массово строят веб-магазины — а значит, конкуренция за дизайнеров с таким опытом усиливается.</p>
+
+    <h3>Кого отсеиваю сразу</h3>
+    <ul>
+      <li><strong>Дизайнеров игровой экономики — но не по слову в должности, а по сути работы.</strong> Если человек проектирует экономику (цены на внутриигровую валюту, балансы, расписание акций) — это другая профессия: у него нет ни экранов, ни пользовательских сценариев, в навыках аналитика и таблицы вместо Figma и дизайн-систем. Но если он продуктовый или UX-дизайнер, а монетизация — это его команда или зона задач, он подходит: как раз такие люди в студиях и делают витрины. В спорных случаях не отсеиваю заочно, а спрашиваю на звонке. И даже «чистого» экономиста не выбрасываю совсем: он точно знает, кто рисовал магазин, — это готовая рекомендация.</li>
+      <li><strong>Дизайнеров чистого игрового интерфейса</strong> — тех, кто делает только полоску здоровья, инвентарь и меню: их задача не мешать играть, наша — довести до покупки и возврата. Но отсеиваю по содержанию опыта, а не по должности: в студиях сильные коммерческие дизайнеры часто называются UI Designer или Game UI/UX и при этом делают веб-магазины, витрины и монетизационные фичи. Проверка показала как раз такие профили, поэтому строку должности игнорирую и читаю описание.</li>
+      <li><strong>Dribbble и Behance как канал поиска.</strong> Проверила обе площадки по запросам про игровые магазины и монетизацию — релевантных работ нет. Там встречаются концепты ради портфолио, а не кейсы с продуктовым контекстом.</li>
+      <li><strong>Массовая рассылка по запросу «designer + gaming».</strong> Запрос выдаёт десятки тысяч профилей при целевой прослойке в сотни: меньше процента попаданий.</li>
+      <li><strong>Дизайнеры из агентств — по умолчанию.</strong> Агентство сдаёт проект и уходит; человек не видит, что показали тесты после запуска. Вакансия требует обратного: работы с метриками и ответственности за результат. Исключение: агентство плюс несколько лет в продукте — смотрим продуктовую часть.</li>
+      <li><strong>Широкий поиск по всем консьюмерским дизайнерам.</strong> Такой пул слишком велик, чтобы пройти его за неделю, и в нём не работает главное преимущество этой стратегии — возможность перечислить рынок поимённо. Возвращаюсь к нему только как ко второй волне (раздел 2).</li>
+    </ul>
+  </section>
+
+  <section id="s2">
+    <h2><span class="n">02</span>Карта рынка: пулы кандидатов</h2>
+
+    <div class="tier">
+      <div class="tag">Tier 1</div>
+      <h3>Компании, которые делают веб-магазины для игр</h3>
+      <p>Прямые конкуренты Xsolla по этому продукту. Дизайнер отсюда решал буквально ту же задачу.</p>
+      <div class="co"><b>Appcharge</b><span>Веб-магазины для Supercell, Scopely, Plarium</span></div>
+      <div class="co"><b>Stash</b><span>Лояльность, VIP-механики, миссии; команда небольшая</span></div>
+      <div class="co"><b>Aghanim</b><span>Основана выходцами из Xsolla: точное попадание по опыту, но многие знают компанию изнутри и имеют сложившееся мнение</span></div>
+      <div class="co"><b>Tebex (Overwolf)</b><span>Давно работающий продукт в этой нише</span></div>
+      <div class="co"><b>Coda Payments</b><span>Codashop — крупнейший веб-магазин Азии</span></div>
+    </div>
+
+    <p>Сколько всего таких дизайнеров — точно узнаю, когда пройду все компании списка. Предварительно предполагаю 30–60 человек на весь мир. Искать буду не запросами, а вручную: открываю компанию и смотрю всех её дизайнеров подряд.</p>
+    <p><strong>Важное уточнение.</strong> У Xsolla десятки конкурентов по разным частям бизнеса: платежи, биллинг, налоги, альтернативные магазины приложений. В Tier 1 я отобрала только тех, кто делает сам магазин для игрока — там работают дизайнеры с нужным опытом. Конкуренты по платёжной инфраструктуре не подходят: другой продукт, другой дизайн. Список не исчерпывающий: если в первый день поиска найдутся ещё компании этого типа, они добавляются сюда же.</p>
+
+    <div class="tier t2">
+      <div class="tag">Tier 2</div>
+      <h3>Студии со своими веб-магазинами</h3>
+      <p>Здесь важное наблюдение из практики: искать в студиях дизайнера «с веб-магазином в профиле» бесполезно. Магазин там обычно ведёт обычный продуктовый дизайнер из команды монетизации, и в профиле это никак не отражается.</p>
+    </div>
+
+    <p>Поэтому беру дизайнеров из монетизационных и консьюмерских команд студий, у которых есть веб-магазины: Scopely, Supercell, Plarium, Playtika, Zynga, Niantic, Moon Active, Snowprint, Omeda Studios; русскоязычный контур — Nexters, MY.GAMES, G5. Признаки в профиле, на которые смотрю: работа с монетизацией, экономикой игры, метриками, A/B-тестами. Причастность к самому магазину выясняю в разговоре, а не по профилю.</p>
+
+    <div class="tier t3">
+      <div class="tag">Tier 3</div>
+      <h3>iGaming: эксперимент, а не основной пул</h3>
+      <p>Продуктовые дизайнеры регулируемых операторов (Betsson, Kindred, LeoVegas, Casumo, Rootz) сильны в том, что просит вакансия: конверсия, удержание, понимание, почему люди тратят.</p>
+    </div>
+
+    <p>Дополнительный аргумент из практики: в этом пуле встречается опыт, которого почти нет в игровых студиях — проектирование модульных платформ, из которых собираются витрины под разные бренды, с настройкой оформления и аналитикой по каждому компоненту. То есть ровно то, чем становится Shop Builder. Найденный пример — в приложении.</p>
+    <p>Ставка экспериментальная: тестирую на 10–15 профилях, продолжаю только если качество ответов будет высоким. Фильтры: только регулируемые операторы, только дизайнеры коммерческих сценариев (витрина, кошелёк, бонусы, программы лояльности), и желательна видимая связь с играми — работа в игровой компании, игровой проект или прямое упоминание, что человек играет.</p>
+    <p>Прежде чем тратить время на этот пул, спрашиваю заказчика напрямую: подходит ли кандидат с опытом в гемблинге или это стоп-фактор. У некоторых игровых компаний на этот счёт есть внутренняя политика.</p>
+
+    <div class="wave">
+      <div class="tag">Вторая волна</div>
+      <h3>Если первая недодаст</h3>
+      <p>Прежде чем строить догадки, спрашиваю на брифинге: игровой опыт обязателен или это пожелание? Профили тех, кого Xsolla нанимала раньше, показывают, что брали сильных продуктовых дизайнеров из финтеха и бигтеха без игрового опыта — но это найм прошлых лет, требования могли измениться. Ответ заказчика определяет, начинаю я с узкого пула или сразу работаю шире.</p>
+      <p>Если ответ «игры обязательны», план такой: 40–60 сообщений первой волны должны дать 10–15 разговоров. Если разговоров с подходящими кандидатами получится меньше восьми — расширяюсь на продуктовых дизайнеров платёжных и коммерческих сценариев из финтеха и крупных сервисов, отдавая приоритет тем, у кого есть связь с играми.</p>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="n">03</span>Как ищу и как отбираю</h2>
+
+    <h3>Главный вывод: начинать с компаний, но не хоронить поиск по словам</h3>
+    <p>Я проверила разные приёмы поиска на этой нише — работает не всё:</p>
+    <ul>
+      <li><strong>Составные булевы запросы не работают.</strong> «product designer» AND webshop AND gaming дал ноль: чем больше редких слов через AND, тем ближе выдача к нулю. Сеньоры не пишут в профилях нишевые термины, а часть проектов под NDA.</li>
+      <li><strong>Простые сочетания из 2–3 слов работают.</strong> Связка design + gaming + monetization дала профили с прямым упоминанием веб-магазина («shipped an in-game web store for Fishing Clash») и с метриками — конверсия, удержание, отток. То есть искать по словам можно, просто не длинными конструкциями.</li>
+      <li><strong>Поиск по компаниям остаётся первым шагом:</strong> выше точность, не нужны запросы, и результат предсказуем.</li>
+    </ul>
+    <p>Что работает — проверено вручную:</p>
+    <p><strong>LinkedIn через страницы компаний.</strong> Страница компании → вкладка People → «designer». Для компаний Tier 1 это 2–5 имён на компанию: быстрее и точнее любых запросов, и работает на бесплатном аккаунте.</p>
+    <p><strong>Возможно, точечный поиск через Google по Хабр Карьере</strong> (~3 400 продуктовых дизайнеров в базе):</p>
+    <pre><code>site:career.habr.com дизайнер "внутриигровой магазин"</code></pre>
+    <p>Запрос находит единичные профили, но открыть их с бесплатным доступом не получается — видно только фрагмент в поисковой выдаче. Держу канал с оговоркой: он подтверждает, что такие люди есть, но для работы нужен платный доступ к базе — это вопрос к заказчику.</p>
+    <p><strong>Словарь терминов ниши</strong> — для чтения профилей и точечных проверок: web store (пишется раздельно), storefront, D2C, accumulation bar, stamp card, game portal, player portal. Взяты из статьи-руководства Appcharge о дизайне веб-магазинов.</p>
+
+    <h3>Как отбираю заочно</h3>
+    <p>Практика показала: подробные критерии по профилю не проверяются. Из четырёх открытых профилей один был заполнен подробно, один — минимально, два — пусто (только компания и должность). Поэтому заочно смотрю только то, что реально видно:</p>
+    <ol>
+      <li>Компания из карты рынка</li>
+      <li>Должность продуктового дизайнера (не UI-художник, не дизайнер экономики)</li>
+      <li>Уровень и годы работы</li>
+      <li>Любое упоминание магазина или коммерции: web store, storefront, payments, монетизация</li>
+    </ol>
+    <p>Этого достаточно, чтобы взять человека в длинный список. Всё остальное — метрики, влияние на конверсию, понимание игроков, качество исполнения — проверяю на 20-минутном скрининг-звонке. Он заменяет портфолио: у большинства кандидатов в этой нише публичных кейсов нет, потому что работа под NDA.</p>
+    <p>На звонке прошу не перечислять инструменты, а объяснить одно своё решение: какая была проблема, что предложил, что показали данные.</p>
+    <p><strong>Что ещё смотрю в профиле:</strong> блок Contact info — там часто лежит ссылка на портфолио и почта, которых не видно в основной части профиля. Если почта есть, пишу и в LinkedIn, и на неё: сообщения в LinkedIn сеньоры часто не открывают.</p>
+    <p><strong>Пример профиля, где всё видно заочно:</strong> <a href="https://www.linkedin.com/in/jessicasundell/">Jessica Sundell, Stash</a> — Principal Product Designer, прямые продажи игрокам, названы проекты (F1 Clash, Warhammer Tacticus) и результаты (пятикратный рост дневной выручки от прямых продаж). Такой профиль — редкая удача, а не норма.</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="n">04</span>Сеть и дополнительные каналы</h2>
+
+    <h3>Рекомендации — второй основной канал, а не запасной</h3>
+    <p>На рынке, где все друг друга знают, одно тёплое знакомство стоит двадцати холодных сообщений.</p>
+    <ul>
+      <li><strong>Дизайнеры экономики и продакт-менеджеры как рекомендатели.</strong> Поиск по слову «monetization» выдаёт не тех, кто нам нужен, — но эти люди работают бок о бок с нужными дизайнерами. Вопрос «с кем из продуктовых дизайнеров вам лучше всего работалось над магазином?» превращает неподходящую выдачу в тёплые контакты.</li>
+      <li><strong>Своя сеть:</strong> прошу знакомых в игровых компаниях из списка представить меня коллегам; в русскоязычном контуре — вопрос в чатах игровых сообществ.</li>
+      <li><strong>Реакции и комментарии</strong> под отраслевыми постами о веб-магазинах (посты Stash и Appcharge в LinkedIn): человек, оставивший осмысленный комментарий, — тёплый контакт с готовой зацепкой для разговора.</li>
+    </ul>
+
+    <h3>Дополнительные каналы</h3>
+    <ul>
+      <li><strong>Списки спикеров конференций</strong> — два проверенных источника имён: <a href="https://www.pocketgamer.biz/massive-32-track-conference-schedule-revealed-for-pg-connects-london-2026/">расписание PG Connects London 2026</a>, где есть целый блок докладов про веб-магазины (спикеры из Tebex, Neon, Appcharge), и <a href="https://www.globalgamesforum.com/barcelona/speakers/product-monetization">спикеры блока Product Monetization на Gamesforum Barcelona</a>. Публичный список имён с указанием мест работы. Деталь: Xsolla — партнёр Gamesforum, то есть я ищу людей в аудитории, которую собирает сам работодатель.</li>
+      <li><strong>Telegram — для охвата, не для поиска.</strong> Отдельного сообщества дизайнеров игровой коммерции в Telegram нет, я проверяла. Поэтому: публикация вакансии в @forgamedev и вопросы о рекомендациях в чатах игровых сообществ.</li>
+    </ul>
+  </section>
+
+  <section id="s5">
+    <h2><span class="n">05</span>Аутрич: сообщения и ставки</h2>
+    <p><strong>Цель первого сообщения — не назначить звонок, а получить ответ.</strong></p>
+
+    <h3>На что я ставлю</h3>
+    <p>Сильный дизайнер получает много рекрутерских сообщений и по умолчанию их не читает. Каждое решение в тексте — ставка против этого:</p>
+    <ol>
+      <li><strong>Первая строка — настоящее наблюдение из работы кандидата.</strong> Не комплимент и не проверка знаний. Правило жёсткое: наблюдение должно быть реальным. Если хорошей зацепки нет, лучше написать менее персонально, чем придумать «умную» деталь и промахнуться.</li>
+      <li><strong>Продаю масштаб задачи.</strong> Человек будет проектировать не один магазин, а решения, которыми потом пользуются сотни студий. Для сильного дизайнера это главный аргумент: его работа влияет на весь продукт, а не на одну витрину. Аргумент разный по тирам: дизайнеру из студии продаю переход от одной витрины к сотням, кандидату из Tier 1 — переход от магазина к конструктору, потому что несколько магазинов сразу он делает и так.</li>
+      <li><strong>Объясняю, почему пишу именно ему</strong> — через конкретный опыт, а не через похвалу.</li>
+      <li><strong>Вопрос, на который можно ответить одной строкой.</strong> «Любопытно узнать больше?» проще, чем согласиться на звонок. Фраза «могу сначала прислать контекст, созваниваться не обязательно» оставляет решение за кандидатом и показывает, что я понимаю ценность его времени.</li>
+      <li><strong>Коротко: 5–7 строк.</strong> Длиннее не читают с телефона.</li>
+    </ol>
+
+    <h3>Где беру зацепки</h3>
+    <p>Одного источника обычно не хватает, поэтому иду по четырём — от общего к конкретному человеку:</p>
+    <ol>
+      <li><strong>Публичные разборы веб-магазинов.</strong> Проверенные ссылки: <a href="https://www.stash.gg/blog/monopoly-go-store">Monopoly GO / Tycoon Club</a>, <a href="https://www.stash.gg/blog/supercell-store">Supercell Store</a>, <a href="https://www.stash.gg/blog/case-study-snowprint-tacticus-launch">кейс Snowprint / Warhammer Tacticus</a>, <a href="https://dev.stash.gg/blog/how-to-analyze-and-optimize-your-games-web-shop">метрики и оптимизация веб-магазинов</a>. Дают контекст продукта, но не самого человека.</li>
+      <li><strong>Профиль в LinkedIn.</strong> Читаю описание опыта, а не строку должности: конкретные проекты, метрики, формулировки.</li>
+      <li><strong>Портфолио кандидата.</strong> Ссылку ищу в блоке Contact info — там часто лежит сайт, которого в основной части профиля не видно. Это единственный источник, где человек сам объясняет своё решение. Даже если кейсы закрыты, видны их заголовки, и этого хватает на честную зацепку.</li>
+      <li><strong>Поиск по имени и компании — в Google и с помощью AI.</strong> Доклады, интервью, статьи, комментарии под отраслевыми постами.</li>
+    </ol>
+
+    <h3>Пример 1 — кандидат из Tier 1</h3>
+    <div class="msg">
+      <p>Привет, [имя]! Наткнулась на вашу работу над [продукт/магазин] — зацепила [конкретная деталь]. Редкий пример коммерции, которая ощущается частью продукта, а не прикрученным сбоку магазином.</p>
+      <p>Я веду поиск Senior Product Designer для Xsolla. Они переводят Shop Builder от магазинов под ключ к платформе, которой студии пользуются сами — то есть интересная часть роли не «спроектировать ещё одну витрину», а определить решения, которые лягут в основу сотен магазинов.</p>
+      <p>Ваш опыт с [конкретный релевантный опыт] выглядит очень близко к этой задаче.</p>
+      <p>Любопытно узнать больше? Могу сначала прислать контекст — созваниваться не обязательно.</p>
+    </div>
+    <p class="after"><em>Примечание: в Tier 1 (Израиль, США, Сингапур, Великобритания) сообщения уходят на английском.</em></p>
+
+    <h3>Пример 2 — русскоязычный кандидат</h3>
+    <div class="msg">
+      <p>[Имя], добрый день! Наткнулась на ваш профиль через [проект] — зацепило [конкретная деталь решения].</p>
+      <p>Ищу Senior Product Designer в Xsolla — это компания, которая делает платежи и веб-магазины для половины игровой индустрии. Команда консьюмерских продуктов, удалённо. Интересная часть роли — не очередной магазин, а решения для конструктора, которым будут пользоваться сотни студий. Ваш опыт с [конкретика] выглядит близко к этой задаче.</p>
+      <p>Кейсы наверняка частично под NDA — это нормально, интереснее услышать про подход голосом. Любопытно узнать детали? Могу сначала прислать контекст, звонок не обязателен.</p>
+    </div>
+
+    <h3>Вариант с юмором — постскриптум к обычному сообщению</h3>
+    <div class="msg">
+      <p>Знаю, что сообщение от рекрутера — это обычно то, что закрывают не читая. Поэтому предлагаю сделку: вы отвечаете мне одной строкой сейчас, а я взамен отвечаю на ваши сообщения всегда — даже через три года и даже если это будет «а нет ли у тебя чего-нибудь».</p>
+    </div>
+    <p class="after"><em>Ставка: самоирония снимает дистанцию — шутка про рекрутеров, а не про кандидата, поэтому не читается как упрёк. И это обещание ценности за пределами конкретной вакансии, чего в холодных сообщениях почти не бывает. Добавляю не всем: хорошо работает с кандидатами, которых явно заваливают предложениями, и не подходит для сдержанной корпоративной культуры. Отправляю только если готова это обещание выполнять.</em></p>
+
+    <h3>Что дальше</h3>
+    <p>Нет ответа — одно напоминание через 4–5 дней, но с новой зацепкой, а не «поднимаю сообщение». Дальше пауза: третье сообщение на узком рынке только вредит. Если человек отвечает «не ищу» — спрашиваю рекомендацию: здесь «нет» с советом, к кому обратиться, ценнее половины «да».</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="n">06</span>Неделя 1: план работы</h2>
+    <div class="day"><b>День 1</b><span>Брифинг с заказчиком (обязателен ли игровой опыт, приемлем ли гемблинг-бэкграунд, что не сработало в предыдущем поиске). Полный проход по компаниям Tier 1.</span></div>
+    <div class="day"><b>День 2</b><span>Tier 2: студии, монетизационные и консьюмерские команды. Цель к концу дня — 80–100 имён с пометками приоритета.</span></div>
+    <div class="day"><b>Дни 3–5</b><span>40–60 персональных сообщений, начиная с самых точных совпадений.</span></div>
+    <div class="day"><b>День 5</b><span>Разбор ответов и отказов: что цепляет, что нет.</span></div>
+    <div class="day"><b>День 6</b><span>Решение по расширению пула, если разговоров меньше восьми. Углубление того канала, который дал лучший отклик.</span></div>
+    <div class="day"><b>День 7</b><span>Первая партия: 5–7 профилей плюс сводка по возражениям рынка для заказчика.</span></div>
+  </section>
+
+  <section id="s7">
+    <h2><span class="n">07</span>Как пойму, что стратегия работает</h2>
+    <p><strong>Расчёт воронки.</strong> Сколько всего кандидатов доступно — точно узнаю, когда пройду все компании из списка. Предварительная оценка: 100–150 человек (Tier 1 целиком, отфильтрованный Tier 2, Хабр, рекомендации и комментаторы отраслевых постов). Для первой партии за неделю нужно 40–60 персональных сообщений. Ориентир по отклику на персональные сообщения в узкой нише — 25–35%; если получится ниже 15%, переписываю первую строку: значит, ставка не сработала. На выходе: 10–15 разговоров, из них 5–7 сильных профилей.</p>
+    <p><strong>Качество важнее количества.</strong> Главная метрика — доля профилей, прошедших отбор заказчика. Если она ниже половины, сверяю критерии с нанимающим менеджером на первых же отказах.</p>
+    <p><strong>Обратная связь.</strong> Каждый отказ с причиной — данные: зарплата, формат работы, репутация, задачи. После десяти разговоров у заказчика будет карта реальных возражений рынка — это ценность сверх закрытой вакансии.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="n">08</span>Как я использую AI</h2>
+    <ul>
+      <li><strong>Погружение в индустрию:</strong> с помощью AI разобралась в бизнес-модели Xsolla и рынке в целом — что такое прямые продажи игрокам, зачем студиям веб-магазины, чем конструктор отличается от магазина под ключ, как устроена монетизация в играх. Плюс собрала данные о самой компании и цифры по росту сегмента.</li>
+      <li><strong>Карта рынка:</strong> список компаний с веб-магазинами составлен с помощью модели и проверен по публичным источникам — в Tier 1 и 2 попали только подтверждённые игроки.</li>
+      <li><strong>Разбор отраслевых статей.</strong> Например, у компании Appcharge (это конкурент Xsolla) в блоге есть статья о том, как устроен дизайн игровых веб-магазинов. Из неё я собрала словарь терминов, по которым потом искала кандидатов.</li>
+      <li><strong>Дизайн и вёрстка этих страниц.</strong> Оформление и код сайта, на котором вы читаете эту работу, тоже сделаны с AI: от макета до готового HTML.</li>
+    </ul>
+    <p>Как я буду использовать AI, когда начнётся реальный поиск:</p>
+    <ul>
+      <li><strong>В работе с кандидатами:</strong> поиск публичных упоминаний человека по имени и компании; помощь в подготовке зацепки для сообщения. Само сообщение всегда пишу и финализирую сама.</li>
+      <li><strong>После первых разговоров:</strong> группирую причины отказов, чтобы скорректировать критерии поиска.</li>
+    </ul>
+    <p><strong>Где не использую AI:</strong> финальное решение по кандидату и массовые рассылки. На рынке в несколько сотен человек одно шаблонное сообщение обходится дороже, чем экономит.</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="n">09</span>Приложение 1: найденные профили</h2>
+    <p>Не финальный список кандидатов, а проверка того, что стратегия даёт живых людей.</p>
+
+    <h3>Tier 1</h3>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/ilhampamn/">Ilham Paman</a> — Coda. В профиле прямо указаны Coda Web Store, дизайн витрины и дизайн-система: точное совпадение с задачей.</li>
+      <li><a href="https://www.linkedin.com/in/jessicasundell/">Jessica Sundell</a> — Stash, Principal Product Designer. Прямые продажи игрокам, названы проекты (F1 Clash, Warhammer Tacticus) и результаты по росту выручки. Уровень выше вакансии — используем для рекомендаций.</li>
+    </ul>
+
+    <h3>Tier 2</h3>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/evelyn-torggler-5a326b189/">Evelyn Torggler</a></li>
+      <li><a href="https://www.linkedin.com/in/vesa-matti-mäkinen-57666b122/">Vesa-Matti Mäkinen</a></li>
+      <li><a href="https://www.linkedin.com/in/idoshtral/">Ido Shtral</a></li>
+      <li><a href="https://www.linkedin.com/in/yonatan-revel/">Yonatan Revel</a></li>
+    </ul>
+    <p>Найдены поиском по словам (design + gaming + monetization) — этот же приём дал профили с прямым упоминанием веб-магазина и с метриками по конверсии и удержанию:</p>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/taras-andrukh/">Taras Andrukh</a></li>
+      <li><a href="https://www.linkedin.com/in/monika-sąsiadek-art27910117/">Monika Sąsiadek</a></li>
+      <li><a href="https://www.linkedin.com/in/lapin-andrei-ui-designer/">Andrei Lapin</a></li>
+    </ul>
+    <p>Компании этой группы: Ten Square Games (в опыте — запуск и итерации веб-магазина Fishing Clash), G5 Games (метрики: конверсия +19%, удержание +3,5%, отток −1,7%), Playrix (должность прямо «Senior UI Designer / Monetization Features»).</p>
+
+    <h3>Tier 3</h3>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/aleksandr-kabanets-1630a7104/">Aleksandr Kabanets</a> — Lead Product Designer, модульная платформа для сборки онлайн-казино: настройка оформления под бренд, аналитика по компонентам, оптимизация конверсии. Структурно ближе всего к задаче Shop Builder. Требует согласования с заказчиком по гемблинг-бэкграунду.</li>
+    </ul>
+  </section>
+
+  <section id="s10">
+    <h2><span class="n">10</span>Приложение 2: заполненное сообщение</h2>
+    <p>Шаблоны в разделе 5 показывают метод. Здесь тот же шаблон, заполненный по реальному кандидату: Ilham Paman, Coda, Tier 1. Зацепка взята с его <a href="https://ilhampamn.framer.website">портфолио</a> — ссылку нашла в блоке Contact info, как описано в разделе 3.</p>
+    <p>Оба кейса Coda на сайте закрыты пометкой «coming soon», прочитать их нельзя. Поэтому зацепляюсь ровно за то, что видно — за заголовки, — и не делаю вид, что читала содержание. Это тот самый случай из правила: лучше честная зацепка, чем придуманная деталь.</p>
+    <div class="msg">
+      <p>Hi Ilham — your site has two Coda cases sitting behind "coming soon", and the titles alone were enough to make me write: enhancing trust in the Call of Duty: Mobile store, and onboarding for game publishers. Trust and self-serve onboarding are the two hard parts of this whole category, and most designers I've come across have worked on one, not both.</p>
+      <p>I'm running a search for a Senior Product Designer at Xsolla. They're turning Shop Builder from turnkey stores into something studios set up themselves — so the problem is that exact pair: what makes a player trust a store that isn't Apple's, and what a publisher can get through without a designer holding their hand.</p>
+      <p>Curious to hear more? I can send the context first — a call isn't required.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============================ ТЕКСТ EN ============================ -->
+<main data-lang="en" hidden>
+  <div class="eyebrow">Sourcing strategy</div>
+  <h1>Senior Product Designer <span style="color:var(--accent)">@ Xsolla</span></h1>
+  <div class="sub">Lena Bondareva · Recruiting Partner challenge for hirehire · August 2026</div>
+
+  <div class="thesis">
+    <span class="l">The main bet</span>
+    The goal is not the largest pool of candidates, but the smallest relevant market
+    that can be covered completely in a week.
+  </div>
+
+  <section id="s1">
+    <h2><span class="n">01</span>Who we're looking for — and who we're deliberately not</h2>
+
+    <h3>What the role is about</h3>
+    <p>Xsolla is looking for a designer who understands user behaviour around spending, engagement and coming back — in a gaming context. Experience with game web stores is the strongest signal of fit, but not a hard requirement: the job description talks about consumer psychology, game mechanics and product strategy, and lists stores, subscriptions and loyalty programmes as a separate plus.</p>
+    <p>The product is web stores: sites through which studios sell to players directly, bypassing the 30% Apple and Google commission. The job of such a store is to give the player a reason to come to the site and to come back: bonuses, loyalty programmes, daily rewards. That's why the job description says so much about player psychology and conversion.</p>
+    <p>A second layer: Xsolla is moving its Shop Builder from turnkey stores towards a builder that studios use themselves. The designer will be designing not one store, but the blocks that hundreds of studios will assemble their own stores from.</p>
+    <p><strong>The main bet of this strategy:</strong> the goal is not the largest pool of candidates, but the smallest relevant market that can be covered completely in a week. This is the answer to "what am I betting on first" — and the reason for most of the deliberate exclusions below.</p>
+
+    <h3>Why this role is worth filling fast</h3>
+    <p>Figures from Xsolla's own report (July 2026): the mobile games market grew by only 0.2% in 2025, while revenue from direct sales to players in the US grew by 26%, and by 38% for the top 100 games. Large publishers are growing their share of direct sales: Playtika reached $814.5M and is aiming for 40%, Huuuge Games has already passed 40%. The segment is growing, studios are building web stores en masse — which means competition for designers with this experience is getting tougher.</p>
+
+    <h3>Who I rule out immediately</h3>
+    <ul>
+      <li><strong>Game economy designers — but by the substance of the work, not by a word in the job title.</strong> If a person designs the economy (in-game currency pricing, balancing, promo schedules), that's a different profession: they have no screens and no user flows, and their skills list analytics and spreadsheets instead of Figma and design systems. But if they are a product or UX designer and monetisation is their team or their area of work, they fit: these are exactly the people who build storefronts inside studios. In borderline cases I don't rule out on paper — I ask on the call. And even a "pure" economist I don't discard entirely: they know exactly who designed the store, which is a ready-made referral.</li>
+      <li><strong>Pure game interface designers</strong> — those who only do the health bar, the inventory and menus: their job is not to get in the way of playing, ours is to lead to a purchase and a return. But I rule out by the substance of the experience, not by the job title: inside studios, strong commercial designers are often called UI Designer or Game UI/UX while building web stores, storefronts and monetisation features. My check turned up exactly such profiles, so I ignore the title line and read the description.</li>
+      <li><strong>Dribbble and Behance as a sourcing channel.</strong> I checked both platforms for queries about game stores and monetisation — there are no relevant works. What's there are concepts made for a portfolio, not cases with product context.</li>
+      <li><strong>Mass outreach off a "designer + gaming" search.</strong> That query returns tens of thousands of profiles against a target layer of a few hundred: under one percent hit rate.</li>
+      <li><strong>Agency designers — by default.</strong> An agency delivers a project and leaves; the person never sees what the tests showed after launch. The role requires the opposite: working with metrics and owning the outcome. Exception: agency plus several years in product — then we look at the product part.</li>
+      <li><strong>A broad search across all consumer designers.</strong> That pool is too large to cover in a week, and it removes the main advantage of this strategy — being able to list the market name by name. I come back to it only as a second wave (section 2).</li>
+    </ul>
+  </section>
+
+  <section id="s2">
+    <h2><span class="n">02</span>Market map: candidate pools</h2>
+
+    <div class="tier">
+      <div class="tag">Tier 1</div>
+      <h3>Companies that build web stores for games</h3>
+      <p>Direct competitors to Xsolla on this product. A designer from here has solved literally the same problem.</p>
+      <div class="co"><b>Appcharge</b><span>Web stores for Supercell, Scopely, Plarium</span></div>
+      <div class="co"><b>Stash</b><span>Loyalty, VIP mechanics, missions; small team</span></div>
+      <div class="co"><b>Aghanim</b><span>Founded by ex-Xsolla people: an exact match on experience, but many know the company from the inside and have a settled opinion</span></div>
+      <div class="co"><b>Tebex (Overwolf)</b><span>A long-established product in this niche</span></div>
+      <div class="co"><b>Coda Payments</b><span>Codashop is the largest web store in Asia</span></div>
+    </div>
+
+    <p>How many such designers there are in total I'll know exactly once I've gone through every company on the list. My preliminary estimate is 30–60 people worldwide. I won't search with queries but by hand: open a company and look through all of its designers one by one.</p>
+    <p><strong>An important clarification.</strong> Xsolla has dozens of competitors across different parts of its business: payments, billing, taxes, alternative app stores. In Tier 1 I selected only those who build the store for the player itself — that's where designers with the right experience work. Competitors in payment infrastructure don't fit: different product, different design. The list isn't exhaustive: if more companies of this type turn up on day one of the search, they get added here.</p>
+
+    <div class="tier t2">
+      <div class="tag">Tier 2</div>
+      <h3>Studios with their own web stores</h3>
+      <p>Here's an important observation from practice: looking inside studios for a designer with "web store" in their profile is pointless. The store there is usually run by an ordinary product designer from the monetisation team, and none of that shows up in the profile.</p>
+    </div>
+
+    <p>So I take designers from the monetisation and consumer teams of studios that have web stores: Scopely, Supercell, Plarium, Playtika, Zynga, Niantic, Moon Active, Snowprint, Omeda Studios; in the Russian-speaking circuit — Nexters, MY.GAMES, G5. The signals I look for in a profile: work with monetisation, game economy, metrics, A/B tests. Whether they were involved in the store itself I find out in conversation, not from the profile.</p>
+
+    <div class="tier t3">
+      <div class="tag">Tier 3</div>
+      <h3>iGaming: an experiment, not a core pool</h3>
+      <p>Product designers at regulated operators (Betsson, Kindred, LeoVegas, Casumo, Rootz) are strong at exactly what the role asks for: conversion, retention, understanding why people spend.</p>
+    </div>
+
+    <p>An additional argument from practice: this pool contains experience that barely exists in game studios — designing modular platforms from which storefronts are assembled for different brands, with per-brand styling and analytics on each component. Which is precisely what Shop Builder is becoming. The example I found is in the appendix.</p>
+    <p>The bet is experimental: I test it on 10–15 profiles and continue only if the quality of replies is high. Filters: regulated operators only, only designers of commercial flows (storefront, wallet, bonuses, loyalty programmes), and ideally a visible connection to games — work at a gaming company, a game project, or a direct mention that the person plays.</p>
+    <p>Before spending time on this pool, I ask the client directly: is a candidate with gambling experience acceptable, or is it a stop factor. Some gaming companies have an internal policy on this.</p>
+
+    <div class="wave">
+      <div class="tag">Second wave</div>
+      <h3>If the first one underdelivers</h3>
+      <p>Before making guesses, I ask at the briefing: is gaming experience mandatory or a preference? The profiles of people Xsolla has hired before show that they took strong product designers from fintech and big tech without gaming experience — but that's hiring from previous years, and the requirements may have changed. The client's answer determines whether I start with the narrow pool or go wide straight away.</p>
+      <p>If the answer is "games are mandatory", the plan is this: 40–60 first-wave messages should produce 10–15 conversations. If there are fewer than eight conversations with suitable candidates, I widen to product designers of payment and commerce flows from fintech and large consumer services, prioritising those with a connection to games.</p>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="n">03</span>How I search and how I screen</h2>
+
+    <h3>The main conclusion: start with companies, but don't bury keyword search</h3>
+    <p>I tested different search techniques on this niche — not everything works:</p>
+    <ul>
+      <li><strong>Compound boolean queries don't work.</strong> "product designer" AND webshop AND gaming returned zero: the more rare words joined by AND, the closer the results get to nothing. Senior people don't write niche terms in their profiles, and some projects are under NDA.</li>
+      <li><strong>Simple combinations of 2–3 words do work.</strong> The pairing design + gaming + monetization returned profiles with a direct mention of a web store ("shipped an in-game web store for Fishing Clash") and with metrics — conversion, retention, churn. So keyword search is possible, just not with long constructions.</li>
+      <li><strong>Company-based search stays the first step:</strong> higher precision, no queries needed, and predictable results.</li>
+    </ul>
+    <p>What works — verified by hand:</p>
+    <p><strong>LinkedIn via company pages.</strong> Company page → People tab → "designer". For Tier 1 companies that's 2–5 names per company: faster and more precise than any query, and it works on a free account.</p>
+    <p><strong>Possibly, targeted search through Google over Habr Career</strong> (~3,400 product designers in the database):</p>
+    <pre><code>site:career.habr.com дизайнер "внутриигровой магазин"</code></pre>
+    <p>The query finds isolated profiles, but they can't be opened on free access — only a fragment in the search results is visible. I keep the channel with a caveat: it confirms such people exist, but working with it requires paid access to the database — that's a question for the client.</p>
+    <p><strong>A glossary of niche terms</strong> — for reading profiles and doing targeted checks: web store (spelled as two words), storefront, D2C, accumulation bar, stamp card, game portal, player portal. Taken from Appcharge's guide article on web store design.</p>
+
+    <h3>How I screen on paper</h3>
+    <p>Practice showed that detailed profile-based criteria can't actually be checked. Of four profiles I opened, one was filled in thoroughly, one minimally, and two were empty (company and job title only). So on paper I look only at what is actually visible:</p>
+    <ol>
+      <li>A company from the market map</li>
+      <li>A product designer title (not UI artist, not economy designer)</li>
+      <li>Level and years of experience</li>
+      <li>Any mention of a store or commerce: web store, storefront, payments, monetisation</li>
+    </ol>
+    <p>That's enough to put someone on the long list. Everything else — metrics, impact on conversion, understanding of players, quality of execution — I check on a 20-minute screening call. It replaces the portfolio: most candidates in this niche have no public cases, because the work is under NDA.</p>
+    <p>On the call I ask them not to list tools, but to explain one decision of theirs: what the problem was, what they proposed, what the data showed.</p>
+    <p><strong>What else I look at in a profile:</strong> the Contact info block — it often holds a portfolio link and an email that aren't visible in the main part of the profile. If there's an email, I write both on LinkedIn and to it: senior people often don't open LinkedIn messages.</p>
+    <p><strong>An example of a profile where everything is visible on paper:</strong> <a href="https://www.linkedin.com/in/jessicasundell/">Jessica Sundell, Stash</a> — Principal Product Designer, direct sales to players, named projects (F1 Clash, Warhammer Tacticus) and results (fivefold growth in daily direct-sales revenue). A profile like this is rare luck, not the norm.</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="n">04</span>Network and additional channels</h2>
+
+    <h3>Referrals — a second core channel, not a backup</h3>
+    <p>In a market where everyone knows everyone, one warm introduction is worth twenty cold messages.</p>
+    <ul>
+      <li><strong>Economy designers and product managers as referrers.</strong> Searching on the word "monetization" returns the wrong people — but those people work side by side with the designers we need. The question "which of the product designers did you most enjoy working with on the store?" turns an unsuitable result set into warm contacts.</li>
+      <li><strong>My own network:</strong> I ask people I know at the gaming companies on the list to introduce me to colleagues; in the Russian-speaking circuit — a question in gaming community chats.</li>
+      <li><strong>Reactions and comments</strong> under industry posts about web stores (posts by Stash and Appcharge on LinkedIn): someone who left a thoughtful comment is a warm contact with a ready-made hook for a conversation.</li>
+    </ul>
+
+    <h3>Additional channels</h3>
+    <ul>
+      <li><strong>Conference speaker lists</strong> — two verified sources of names: <a href="https://www.pocketgamer.biz/massive-32-track-conference-schedule-revealed-for-pg-connects-london-2026/">the PG Connects London 2026 schedule</a>, which has a whole block of talks on web stores (speakers from Tebex, Neon, Appcharge), and <a href="https://www.globalgamesforum.com/barcelona/speakers/product-monetization">the speakers of the Product Monetization track at Gamesforum Barcelona</a>. A public list of names with their places of work. A detail: Xsolla is a Gamesforum partner, meaning I'm looking for people in an audience the employer itself brings together.</li>
+      <li><strong>Telegram — for reach, not for search.</strong> There is no dedicated community of game commerce designers on Telegram; I checked. So: posting the role in @forgamedev and asking for referrals in gaming community chats.</li>
+    </ul>
+  </section>
+
+  <section id="s5">
+    <h2><span class="n">05</span>Outreach: messages and bets</h2>
+    <p><strong>The goal of the first message is not to book a call, but to get a reply.</strong></p>
+
+    <h3>What I'm betting on</h3>
+    <p>A strong designer gets a lot of recruiter messages and by default doesn't read them. Every decision in the text is a bet against that:</p>
+    <ol>
+      <li><strong>The first line is a real observation from the candidate's work.</strong> Not a compliment and not a knowledge test. The rule is strict: the observation has to be real. If there's no good hook, it's better to write something less personal than to invent a "clever" detail and miss.</li>
+      <li><strong>I sell the scale of the problem.</strong> The person will be designing not one store, but decisions that hundreds of studios will then use. For a strong designer that's the main argument: their work affects the whole product, not a single storefront. The argument differs by tier: to a studio designer I sell the move from one storefront to hundreds; to a Tier 1 candidate, the move from a store to a builder, because they already ship several stores at once.</li>
+      <li><strong>I explain why I'm writing to them specifically</strong> — through concrete experience, not through praise.</li>
+      <li><strong>A question that can be answered in one line.</strong> "Curious to hear more?" is easier than agreeing to a call. The line "I can send the context first, a call isn't required" leaves the decision with the candidate and shows I understand the value of their time.</li>
+      <li><strong>Short: 5–7 lines.</strong> Anything longer doesn't get read on a phone.</li>
+    </ol>
+
+    <h3>Where I get the hooks</h3>
+    <p>One source is usually not enough, so I go through four — from the general to the specific person:</p>
+    <ol>
+      <li><strong>Public breakdowns of web stores.</strong> Verified links: <a href="https://www.stash.gg/blog/monopoly-go-store">Monopoly GO / Tycoon Club</a>, <a href="https://www.stash.gg/blog/supercell-store">Supercell Store</a>, <a href="https://www.stash.gg/blog/case-study-snowprint-tacticus-launch">the Snowprint / Warhammer Tacticus case</a>, <a href="https://dev.stash.gg/blog/how-to-analyze-and-optimize-your-games-web-shop">metrics and web store optimisation</a>. These give product context, but not the person.</li>
+      <li><strong>The LinkedIn profile.</strong> I read the description of the experience, not the job title line: specific projects, metrics, the way things are phrased.</li>
+      <li><strong>The candidate's portfolio.</strong> I look for the link in the Contact info block — it often holds a site that isn't visible in the main part of the profile. It's the only source where the person explains their own decision. Even when the cases are closed, the titles are visible, and that's enough for an honest hook.</li>
+      <li><strong>A search on the name and company — in Google and with AI.</strong> Talks, interviews, articles, comments under industry posts.</li>
+    </ol>
+
+    <h3>Example 1 — a Tier 1 candidate</h3>
+    <div class="msg">
+      <p>Hi [name]! I came across your work on [product/store] — [specific detail] caught my eye. A rare example of commerce that feels like part of the product rather than a store bolted on the side.</p>
+      <p>I'm running a search for a Senior Product Designer for Xsolla. They're moving Shop Builder from turnkey stores towards a platform studios use themselves — so the interesting part of the role isn't "design one more storefront", it's defining the decisions that hundreds of stores will be built on.</p>
+      <p>Your experience with [specific relevant experience] looks very close to this problem.</p>
+      <p>Curious to hear more? I can send the context first — a call isn't required.</p>
+    </div>
+    <p class="after"><em>Note: in Tier 1 (Israel, US, Singapore, UK) messages go out in English.</em></p>
+
+    <h3>Example 2 — a Russian-speaking candidate</h3>
+    <div class="msg">
+      <p>[Name], hello! I came across your profile through [project] — [specific detail of the solution] caught my eye.</p>
+      <p>I'm looking for a Senior Product Designer at Xsolla — the company that does payments and web stores for half the games industry. Consumer products team, remote. The interesting part of the role isn't another store, it's the decisions for the builder that hundreds of studios will use. Your experience with [specifics] looks close to this problem.</p>
+      <p>Your cases are probably partly under NDA — that's fine, it's more interesting to hear about the approach out loud. Curious to hear the details? I can send the context first, a call isn't required.</p>
+    </div>
+
+    <h3>A version with humour — a postscript to the standard message</h3>
+    <div class="msg">
+      <p>I know a message from a recruiter is usually the kind of thing you close without reading. So here's a deal: you reply to me with one line now, and in exchange I answer your messages forever — even three years from now, and even if it's "so, got anything going?"</p>
+    </div>
+    <p class="after"><em>The bet: self-irony removes the distance — the joke is about recruiters, not about the candidate, so it doesn't read as a reproach. And it's a promise of value beyond this specific role, which cold messages almost never contain. I don't add it for everyone: it works well with candidates who are clearly buried in offers, and doesn't suit a reserved corporate culture. I only send it if I'm prepared to keep that promise.</em></p>
+
+    <h3>What comes next</h3>
+    <p>No reply — one reminder after 4–5 days, but with a new hook, not "bumping this up". After that, a pause: a third message in a narrow market only does harm. If the person replies "not looking" — I ask for a referral: here a "no" with advice on who to approach is worth more than half the "yes"es.</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="n">06</span>Week 1: work plan</h2>
+    <div class="day"><b>Day 1</b><span>Briefing with the client (is gaming experience mandatory, is a gambling background acceptable, what didn't work in the previous search). Full pass through the Tier 1 companies.</span></div>
+    <div class="day"><b>Day 2</b><span>Tier 2: studios, monetisation and consumer teams. Target by end of day — 80–100 names with priority markers.</span></div>
+    <div class="day"><b>Days 3–5</b><span>40–60 personal messages, starting with the closest matches.</span></div>
+    <div class="day"><b>Day 5</b><span>Review of replies and rejections: what lands, what doesn't.</span></div>
+    <div class="day"><b>Day 6</b><span>Decision on widening the pool if there are fewer than eight conversations. Going deeper into whichever channel gave the best response.</span></div>
+    <div class="day"><b>Day 7</b><span>First batch: 5–7 profiles plus a summary of market objections for the client.</span></div>
+  </section>
+
+  <section id="s7">
+    <h2><span class="n">07</span>How I'll know the strategy is working</h2>
+    <p><strong>Funnel maths.</strong> How many candidates are available in total I'll know exactly once I've gone through every company on the list. Preliminary estimate: 100–150 people (all of Tier 1, a filtered Tier 2, Habr, referrals and commenters on industry posts). For the first batch within a week I need 40–60 personal messages. The benchmark for response to personal messages in a narrow niche is 25–35%; if it comes out below 15%, I rewrite the first line — that means the bet didn't work. The output: 10–15 conversations, of them 5–7 strong profiles.</p>
+    <p><strong>Quality over quantity.</strong> The main metric is the share of profiles that pass the client's screening. If it's below half, I check the criteria with the hiring manager on the very first rejections.</p>
+    <p><strong>Feedback.</strong> Every rejection with a reason is data: salary, working format, reputation, tasks. After ten conversations the client will have a map of the market's real objections — that's value beyond the filled role.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="n">08</span>How I use AI</h2>
+    <ul>
+      <li><strong>Getting into the industry:</strong> with AI I worked out Xsolla's business model and the market in general — what direct sales to players are, why studios need web stores, how a builder differs from a turnkey store, how monetisation in games works. Plus I gathered data on the company itself and figures on the segment's growth.</li>
+      <li><strong>The market map:</strong> the list of companies with web stores was assembled with a model and verified against public sources — only confirmed players made it into Tier 1 and 2.</li>
+      <li><strong>Breaking down industry articles.</strong> For example, Appcharge (a competitor of Xsolla) has a blog article on how the design of game web stores works. From it I put together the glossary of terms I then used to search for candidates.</li>
+      <li><strong>The design and build of these pages.</strong> The layout and code of the site you're reading this on were also made with AI: from the mockup to the finished HTML.</li>
+    </ul>
+    <p>How I'll use AI once the real search starts:</p>
+    <ul>
+      <li><strong>In work with candidates:</strong> finding public mentions of a person by name and company; help preparing a hook for the message. The message itself I always write and finalise myself.</li>
+      <li><strong>After the first conversations:</strong> grouping the reasons for rejections in order to adjust the search criteria.</li>
+    </ul>
+    <p><strong>Where I don't use AI:</strong> the final decision on a candidate, and mass outreach. In a market of a few hundred people, one templated message costs more than it saves.</p>
+  </section>
+
+  <section id="s9">
+    <h2><span class="n">09</span>Appendix 1: profiles found</h2>
+    <p>Not a final candidate list, but a check that the strategy produces real people.</p>
+
+    <h3>Tier 1</h3>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/ilhampamn/">Ilham Paman</a> — Coda. The profile explicitly lists Coda Web Store, storefront design and a design system: an exact match with the task.</li>
+      <li><a href="https://www.linkedin.com/in/jessicasundell/">Jessica Sundell</a> — Stash, Principal Product Designer. Direct sales to players, named projects (F1 Clash, Warhammer Tacticus) and results on revenue growth. Above the level of this role — we use her for referrals.</li>
+    </ul>
+
+    <h3>Tier 2</h3>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/evelyn-torggler-5a326b189/">Evelyn Torggler</a></li>
+      <li><a href="https://www.linkedin.com/in/vesa-matti-mäkinen-57666b122/">Vesa-Matti Mäkinen</a></li>
+      <li><a href="https://www.linkedin.com/in/idoshtral/">Ido Shtral</a></li>
+      <li><a href="https://www.linkedin.com/in/yonatan-revel/">Yonatan Revel</a></li>
+    </ul>
+    <p>Found via keyword search (design + gaming + monetization) — the same technique produced profiles with a direct mention of a web store and with conversion and retention metrics:</p>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/taras-andrukh/">Taras Andrukh</a></li>
+      <li><a href="https://www.linkedin.com/in/monika-sąsiadek-art27910117/">Monika Sąsiadek</a></li>
+      <li><a href="https://www.linkedin.com/in/lapin-andrei-ui-designer/">Andrei Lapin</a></li>
+    </ul>
+    <p>Companies in this group: Ten Square Games (experience includes launching and iterating on the Fishing Clash web store), G5 Games (metrics: conversion +19%, retention +3.5%, churn −1.7%), Playrix (job title literally "Senior UI Designer / Monetization Features").</p>
+
+    <h3>Tier 3</h3>
+    <ul>
+      <li><a href="https://www.linkedin.com/in/aleksandr-kabanets-1630a7104/">Aleksandr Kabanets</a> — Lead Product Designer, a modular platform for assembling online casinos: brand-level styling configuration, per-component analytics, conversion optimisation. Structurally the closest thing to the Shop Builder task. Requires agreement with the client on a gambling background.</li>
+    </ul>
+  </section>
+
+  <section id="s10">
+    <h2><span class="n">10</span>Appendix 2: a filled-in message</h2>
+    <p>The templates in section 5 show the method. Here is the same template, filled in for a real candidate: Ilham Paman, Coda, Tier 1. The hook comes from his <a href="https://ilhampamn.framer.website">portfolio</a> — I found the link in the Contact info block, as described in section 3.</p>
+    <p>Both Coda cases on the site sit behind a "coming soon" label and can't be read. So I hook onto exactly what is visible — the titles — and don't pretend to have read the contents. This is the case the rule is about: an honest hook beats an invented detail.</p>
+    <div class="msg">
+      <p>Hi Ilham — your site has two Coda cases sitting behind "coming soon", and the titles alone were enough to make me write: enhancing trust in the Call of Duty: Mobile store, and onboarding for game publishers. Trust and self-serve onboarding are the two hard parts of this whole category, and most designers I've come across have worked on one, not both.</p>
+      <p>I'm running a search for a Senior Product Designer at Xsolla. They're turning Shop Builder from turnkey stores into something studios set up themselves — so the problem is that exact pair: what makes a player trust a store that isn't Apple's, and what a publisher can get through without a designer holding their hand.</p>
+      <p>Curious to hear more? I can send the context first — a call isn't required.</p>
+    </div>
+  </section>
+</main>
+
+</div>
+
+<script>
+(function(){
+  function setLang(l){
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-lang]').forEach(function(el){
+      el.hidden = (el.getAttribute('data-lang') !== l);
+    });
+    document.querySelectorAll('.lang button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-set') === l);
+    });
+    mark();
+  }
+
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-set')); });
+  });
+
+  // подсветка текущего раздела в оглавлении
+  function mark(){
+    var current = '';
+    document.querySelectorAll('main:not([hidden]) section').forEach(function(s){
+      if(s.getBoundingClientRect().top < 120) current = s.id;
+    });
+    document.querySelectorAll('nav.toc:not([hidden]) a').forEach(function(a){
+      a.classList.toggle('on', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', mark, {passive:true});
+  mark();
+})();
+</script>
+</body>
+</html>
